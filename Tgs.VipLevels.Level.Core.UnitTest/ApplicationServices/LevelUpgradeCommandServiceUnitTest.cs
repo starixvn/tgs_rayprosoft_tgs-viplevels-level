@@ -3,6 +3,8 @@ using NSubstitute;
 using Tgs.VipLevels.Level.Common;
 using Tgs.VipLevels.Level.Common.Protos;
 using Tgs.VipLevels.Level.Core.ApplicationServices;
+using Tgs.VipLevels.Upgrade.Common;
+using Tgs.VipLevels.Upgrade.Common.Protos;
 using Tgs.VipLevelService.Clients;
 using Tgs.VipLevelService.Common;
 using Tgs.VipLevelService.Common.ViewModels;
@@ -134,6 +136,17 @@ public class LevelUpgradeCommandServiceUnitTest
 			playerCode: playerVipLevelInfo.PlayerCode,
 			vipLevel: higher.Level,
 			vipLevelId: higher.Id,
+			cancellationToken: Arg.Any<CancellationToken>());
+
+		_ = fakeMessageSender
+			.Received(1)
+			.PublishAsync(
+			subject: Arg.Is(VipLevelsUpgradeNatsConst.Create),
+			data: Arg.Is(new VipLevelsUpgradeMessage
+			{
+				PlayerCode = playerVipLevelInfo.PlayerCode,
+				VipLevel = higher.Level,
+			}),
 			cancellationToken: Arg.Any<CancellationToken>());
 
 		_ = fakeMessageSender
@@ -274,6 +287,17 @@ public class LevelUpgradeCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
+			subject: Arg.Is(VipLevelsUpgradeNatsConst.Create),
+			data: Arg.Is(new VipLevelsUpgradeMessage
+			{
+				PlayerCode = playerVipLevelInfo.PlayerCode,
+				VipLevel = higher.Level,
+			}),
+			cancellationToken: Arg.Any<CancellationToken>());
+
+		_ = fakeMessageSender
+			.Received(0)
+			.PublishAsync(
 			subject: Arg.Is(VipLevelsLevelNatsConst.Check),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
@@ -330,6 +354,13 @@ public class LevelUpgradeCommandServiceUnitTest
 			playerCode: playerVipLevelInfo.PlayerCode,
 			vipLevel: Arg.Any<int>(),
 			vipLevelId: Arg.Any<Guid>(),
+			cancellationToken: Arg.Any<CancellationToken>());
+
+		_ = fakeMessageSender
+			.Received(0)
+			.PublishAsync(
+			subject: Arg.Is(VipLevelsUpgradeNatsConst.Create),
+			data: Arg.Any<VipLevelsUpgradeMessage>(),
 			cancellationToken: Arg.Any<CancellationToken>());
 
 		_ = fakeMessageSender
@@ -457,6 +488,13 @@ public class LevelUpgradeCommandServiceUnitTest
 			playerCode: playerVipLevelInfo.PlayerCode,
 			vipLevel: higher.Level,
 			vipLevelId: higher.Id,
+			cancellationToken: Arg.Any<CancellationToken>());
+
+		_ = fakeMessageSender
+			.Received(0)
+			.PublishAsync(
+			subject: Arg.Is(VipLevelsUpgradeNatsConst.Create),
+			data: Arg.Any<VipLevelsUpgradeMessage>(),
 			cancellationToken: Arg.Any<CancellationToken>());
 
 		_ = fakeMessageSender
