@@ -1,0 +1,6 @@
+@Tgs.VipLevels.Level_HostAddress = http://localhost:5071
+
+GET {{Tgs.VipLevels.Level_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
