@@ -7,7 +7,7 @@ variables:
   ImageName: pgtgs/viplevels-level
   TgsSettingKey: viplevels-level
   HelmTemplateFolderName: viplevels-level
-  BuildCacheKey: Tgs.VipLevels.Upgrade.$CI_PIPELINE_IID
+  BuildCacheKey: Tgs.VipLevels.Level.$CI_PIPELINE_IID
 
 stages:
   - build
@@ -28,15 +28,15 @@ unit-test:
 push-nuget:
   extends: .push-nuget-template
   script:
-    - push_package "Tgs.VipLevels.Upgrade.Client"
+    - push_package "Tgs.VipLevels.Level.Client"
   artifacts:
     paths:
-      - Tgs.VipLevels.Upgrade.Client/bin/$BuildConfiguration/*.nupkg
+      - Tgs.VipLevels.Level.Client/bin/$BuildConfiguration/*.nupkg
 
 push-docker-image:
   extends: .push-docker-image-template
   script:
-    - push_docker "Tgs.VipLevels.Upgrade" $ImageName $Tag
+    - push_docker "Tgs.VipLevels.Level" $ImageName $Tag
 
 push-k8s-template:
   extends: .push-k8s-template
