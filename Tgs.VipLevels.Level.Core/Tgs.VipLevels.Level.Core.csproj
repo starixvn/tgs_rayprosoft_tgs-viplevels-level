@@ -15,7 +15,7 @@
 		<PackageReference Include="Tgs.MessageQueue.Nats.Serializers" Version="0.0.2" />
 		<PackageReference Include="TGS.ServiceUtility" Version="0.2.0" />
 		<PackageReference Include="Tgs.VipLevels.Upgrade.Client" Version="1.0.1" />
-		<PackageReference Include="Tgs.VipLevelService.Client" Version="0.0.17" />
+		<PackageReference Include="Tgs.VipLevelService.Client" Version="0.0.23" />
 	</ItemGroup>
 
 	<ItemGroup>

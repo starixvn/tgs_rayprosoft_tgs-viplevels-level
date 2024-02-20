@@ -17,13 +17,16 @@ public class UpgradeCheckCommandServiceUnitTest
 	{
 		var fakeLog = NullLogger<UpgradeCheckCommandService>.Instance;
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
-		var fakeVipLevelUtensils = Substitute.For<IVipLevelUtensils>();
 		var fakeMessageSender = Substitute.For<IMessageSender>();
 
 		var command = new LevelCheckCommand
 		(
 			PlayerCode: "4ucmqplxb029"
 		);
+
+		var nextVipLevelId = Guid.NewGuid();
+
+		var nextVipLevel = 3;
 
 		var playerVipLevelInfo = new PlayerVipLevelInfoViewModel(
 			ResellerId: Guid.NewGuid(),
@@ -38,92 +41,22 @@ public class UpgradeCheckCommandServiceUnitTest
 			VipLevel: 2,
 			AutoState: PlayerVipLevelAutoState.Enable,
 			AccumDepositId: Guid.NewGuid(),
-			AccumDeposit: 4989,
+			AccumDeposit: 6000,
 			AccumTurnoverId: Guid.NewGuid(),
-			AccumTurnover: 5989);
+			AccumTurnover: 5000,
+			LevelUpAccumulateBetAmount: 5999,
+			LevelUpAccumulateDeposit: 4999,
+			false,
+			NextVipLevelId: nextVipLevelId,
+			NextVipLevel: nextVipLevel);
 		_ = fakeVipLevelServiceClient.PlayerVipLevelGetAsync(
 			playerCode: Arg.Is(command.PlayerCode),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns(playerVipLevelInfo);
 
-		var current = new VipLevelInfoViewModel(
-			Id: playerVipLevelInfo.VipLevelId,
-			Level: 2,
-			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 5999,
-			LevelUpAccumulateDeposit: 4999,
-			LevelKeepAccumulateBetAmount: 0,
-			LevelKeepAccumulateDeposit: 0,
-			LevelKeepCondition: true,
-			BirthBenefit: 199.0m,
-			PromotionBenefit: 188.0m,
-			QuarterlyBenefit: 166.0m,
-			LiveDealerRebate: 0.0m,
-			SlotRebate: 0.0m,
-			LotteryRebate: 0.0m,
-			CardGameRebate: 0.0m,
-			SportsRebate: 0.0m,
-			VirtualSportsRebate: 0.0m,
-			WithdrawTransactionsPerDay: -1,
-			WithdrawTotalAmountPerDay: -1);
-		var higher = new VipLevelInfoViewModel(
-			Id: Guid.NewGuid(),
-			Level: 3,
-			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 10999,
-			LevelUpAccumulateDeposit: 9999,
-			LevelKeepAccumulateBetAmount: 0,
-			LevelKeepAccumulateDeposit: 0,
-			LevelKeepCondition: true,
-			BirthBenefit: 299.0m,
-			PromotionBenefit: 288.0m,
-			QuarterlyBenefit: 266.0m,
-			LiveDealerRebate: 0.0m,
-			SlotRebate: 0.0m,
-			LotteryRebate: 0.0m,
-			CardGameRebate: 0.0m,
-			SportsRebate: 0.0m,
-			VirtualSportsRebate: 0.0m,
-			WithdrawTransactionsPerDay: -1,
-			WithdrawTotalAmountPerDay: -1);
-		var lower = new VipLevelInfoViewModel(
-			Id: Guid.NewGuid(),
-			Level: 1,
-			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 1999,
-			LevelUpAccumulateDeposit: 999,
-			LevelKeepAccumulateBetAmount: 0,
-			LevelKeepAccumulateDeposit: 0,
-			LevelKeepCondition: true,
-			BirthBenefit: 99.0m,
-			PromotionBenefit: 88.0m,
-			QuarterlyBenefit: 66.0m,
-			LiveDealerRebate: 0.0m,
-			SlotRebate: 0.0m,
-			LotteryRebate: 0.0m,
-			CardGameRebate: 0.0m,
-			SportsRebate: 0.0m,
-			VirtualSportsRebate: 0.0m,
-			WithdrawTransactionsPerDay: -1,
-			WithdrawTotalAmountPerDay: -1);
-		_ = fakeVipLevelUtensils.GetConditionsAsync(
-			brandId: Arg.Is(playerVipLevelInfo.BrandId),
-			level: Arg.Is(playerVipLevelInfo.VipLevel),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns<(VipLevelInfoViewModel Current, VipLevelInfoViewModel Higher, VipLevelInfoViewModel Lower)>((current, higher, lower));
-
-		decimal currentDeposit = 5001m;
-		decimal CurrentTurnover = 6001m;
-		_ = fakeVipLevelUtensils.GetCurrentExpAsync(
-			accumDepositId: Arg.Is(playerVipLevelInfo.AccumDepositId),
-			accumTurnoverId: Arg.Is(playerVipLevelInfo.AccumTurnoverId),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns<(decimal CurrentDeposit, decimal CurrentTurnover)>((currentDeposit, CurrentTurnover));
-
 		var sut = new UpgradeCheckCommandService(
 			fakeLog,
 			fakeVipLevelServiceClient,
-			fakeVipLevelUtensils,
 			fakeMessageSender);
 
 		await sut.ExecuteAsync(command);
@@ -144,13 +77,16 @@ public class UpgradeCheckCommandServiceUnitTest
 	{
 		var fakeLog = NullLogger<UpgradeCheckCommandService>.Instance;
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
-		var fakeVipLevelUtensils = Substitute.For<IVipLevelUtensils>();
 		var fakeMessageSender = Substitute.For<IMessageSender>();
 
 		var command = new LevelCheckCommand
 		(
 			PlayerCode: "4ucmqplxb029"
 		);
+
+		var nextVipLevelId = Guid.NewGuid();
+
+		var nextVipLevel = 3;
 
 		var playerVipLevelInfo = new PlayerVipLevelInfoViewModel(
 			ResellerId: Guid.NewGuid(),
@@ -167,90 +103,20 @@ public class UpgradeCheckCommandServiceUnitTest
 			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
 			AccumTurnoverId: Guid.NewGuid(),
-			AccumTurnover: 5989);
+			AccumTurnover: 5989,
+			LevelUpAccumulateBetAmount: 5999,
+			LevelUpAccumulateDeposit: 4999,
+			FullLevel: false,
+			NextVipLevelId: nextVipLevelId,
+			NextVipLevel: nextVipLevel);
 		_ = fakeVipLevelServiceClient.PlayerVipLevelGetAsync(
 			playerCode: Arg.Is(command.PlayerCode),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns(playerVipLevelInfo);
 
-		var current = new VipLevelInfoViewModel(
-			Id: playerVipLevelInfo.VipLevelId,
-			Level: 2,
-			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 5999,
-			LevelUpAccumulateDeposit: 4999,
-			LevelKeepAccumulateBetAmount: 0,
-			LevelKeepAccumulateDeposit: 0,
-			LevelKeepCondition: true,
-			BirthBenefit: 199.0m,
-			PromotionBenefit: 188.0m,
-			QuarterlyBenefit: 166.0m,
-			LiveDealerRebate: 0.0m,
-			SlotRebate: 0.0m,
-			LotteryRebate: 0.0m,
-			CardGameRebate: 0.0m,
-			SportsRebate: 0.0m,
-			VirtualSportsRebate: 0.0m,
-			WithdrawTransactionsPerDay: -1,
-			WithdrawTotalAmountPerDay: -1);
-		var higher = new VipLevelInfoViewModel(
-			Id: Guid.NewGuid(),
-			Level: 3,
-			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 10999,
-			LevelUpAccumulateDeposit: 9999,
-			LevelKeepAccumulateBetAmount: 0,
-			LevelKeepAccumulateDeposit: 0,
-			LevelKeepCondition: true,
-			BirthBenefit: 299.0m,
-			PromotionBenefit: 288.0m,
-			QuarterlyBenefit: 266.0m,
-			LiveDealerRebate: 0.0m,
-			SlotRebate: 0.0m,
-			LotteryRebate: 0.0m,
-			CardGameRebate: 0.0m,
-			SportsRebate: 0.0m,
-			VirtualSportsRebate: 0.0m,
-			WithdrawTransactionsPerDay: -1,
-			WithdrawTotalAmountPerDay: -1);
-		var lower = new VipLevelInfoViewModel(
-			Id: Guid.NewGuid(),
-			Level: 1,
-			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 1999,
-			LevelUpAccumulateDeposit: 999,
-			LevelKeepAccumulateBetAmount: 0,
-			LevelKeepAccumulateDeposit: 0,
-			LevelKeepCondition: true,
-			BirthBenefit: 99.0m,
-			PromotionBenefit: 88.0m,
-			QuarterlyBenefit: 66.0m,
-			LiveDealerRebate: 0.0m,
-			SlotRebate: 0.0m,
-			LotteryRebate: 0.0m,
-			CardGameRebate: 0.0m,
-			SportsRebate: 0.0m,
-			VirtualSportsRebate: 0.0m,
-			WithdrawTransactionsPerDay: -1,
-			WithdrawTotalAmountPerDay: -1);
-		_ = fakeVipLevelUtensils.GetConditionsAsync(
-			brandId: Arg.Is(playerVipLevelInfo.BrandId),
-			level: Arg.Is(playerVipLevelInfo.VipLevel),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns<(VipLevelInfoViewModel Current, VipLevelInfoViewModel Higher, VipLevelInfoViewModel Lower)>((current, higher, lower));
-
-		decimal currentDeposit = 4998m;
-		decimal CurrentTurnover = 6001m;
-		_ = fakeVipLevelUtensils.GetCurrentExpAsync(
-			accumDepositId: Arg.Is(playerVipLevelInfo.AccumDepositId),
-			accumTurnoverId: Arg.Is(playerVipLevelInfo.AccumTurnoverId),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns<(decimal CurrentDeposit, decimal CurrentTurnover)>((currentDeposit, CurrentTurnover));
-
 		var sut = new UpgradeCheckCommandService(
 			fakeLog,
 			fakeVipLevelServiceClient,
-			fakeVipLevelUtensils,
 			fakeMessageSender);
 
 		await sut.ExecuteAsync(command);
@@ -271,13 +137,16 @@ public class UpgradeCheckCommandServiceUnitTest
 	{
 		var fakeLog = NullLogger<UpgradeCheckCommandService>.Instance;
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
-		var fakeVipLevelUtensils = Substitute.For<IVipLevelUtensils>();
 		var fakeMessageSender = Substitute.For<IMessageSender>();
 
 		var command = new LevelCheckCommand
 		(
 			PlayerCode: "4ucmqplxb029"
 		);
+
+		var nextVipLevelId = Guid.NewGuid();
+
+		var nextVipLevel = 3;
 
 		var playerVipLevelInfo = new PlayerVipLevelInfoViewModel(
 			ResellerId: Guid.NewGuid(),
@@ -294,7 +163,12 @@ public class UpgradeCheckCommandServiceUnitTest
 			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
 			AccumTurnoverId: Guid.NewGuid(),
-			AccumTurnover: 5989);
+			AccumTurnover: 5989,
+			LevelUpAccumulateBetAmount: 5999,
+			LevelUpAccumulateDeposit: 4999,
+			FullLevel: false,
+			NextVipLevelId: nextVipLevelId,
+			NextVipLevel: nextVipLevel);
 		_ = fakeVipLevelServiceClient.PlayerVipLevelGetAsync(
 			playerCode: Arg.Is(command.PlayerCode),
 			cancellationToken: Arg.Any<CancellationToken>())
@@ -303,7 +177,6 @@ public class UpgradeCheckCommandServiceUnitTest
 		var sut = new UpgradeCheckCommandService(
 			fakeLog,
 			fakeVipLevelServiceClient,
-			fakeVipLevelUtensils,
 			fakeMessageSender);
 
 		await sut.ExecuteAsync(command);
@@ -324,13 +197,15 @@ public class UpgradeCheckCommandServiceUnitTest
 	{
 		var fakeLog = NullLogger<UpgradeCheckCommandService>.Instance;
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
-		var fakeVipLevelUtensils = Substitute.For<IVipLevelUtensils>();
 		var fakeMessageSender = Substitute.For<IMessageSender>();
 
 		var command = new LevelCheckCommand
 		(
 			PlayerCode: "4ucmqplxb029"
 		);
+
+		var vipLevelId=Guid.NewGuid();
+		var vipLevel = 3;
 
 		var playerVipLevelInfo = new PlayerVipLevelInfoViewModel(
 			ResellerId: Guid.NewGuid(),
@@ -341,88 +216,27 @@ public class UpgradeCheckCommandServiceUnitTest
 			BrandCode: "GPI",
 			PlayerCode: "4ucmqplxb029",
 			Username: "test",
-			VipLevelId: Guid.NewGuid(),
-			VipLevel: 3,
+			VipLevelId: vipLevelId,
+			VipLevel: vipLevel,
 			AutoState: PlayerVipLevelAutoState.Enable,
 			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
 			AccumTurnoverId: Guid.NewGuid(),
-			AccumTurnover: 5989);
+			AccumTurnover: 5989,
+			LevelUpAccumulateBetAmount: 10999,
+			LevelUpAccumulateDeposit: 9999,
+			FullLevel: true,
+			NextVipLevelId: vipLevelId,
+			NextVipLevel: vipLevel);
 		_ = fakeVipLevelServiceClient.PlayerVipLevelGetAsync(
 			playerCode: Arg.Is(command.PlayerCode),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns(playerVipLevelInfo);
 
-		var current = new VipLevelInfoViewModel(
-			Id: playerVipLevelInfo.VipLevelId,
-			Level: 3,
-			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 10999,
-			LevelUpAccumulateDeposit: 9999,
-			LevelKeepAccumulateBetAmount: 0,
-			LevelKeepAccumulateDeposit: 0,
-			LevelKeepCondition: true,
-			BirthBenefit: 299.0m,
-			PromotionBenefit: 288.0m,
-			QuarterlyBenefit: 266.0m,
-			LiveDealerRebate: 0.0m,
-			SlotRebate: 0.0m,
-			LotteryRebate: 0.0m,
-			CardGameRebate: 0.0m,
-			SportsRebate: 0.0m,
-			VirtualSportsRebate: 0.0m,
-			WithdrawTransactionsPerDay: -1,
-			WithdrawTotalAmountPerDay: -1);
-		var higher = new VipLevelInfoViewModel(
-			Id: playerVipLevelInfo.VipLevelId,
-			Level: 3,
-			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 10999,
-			LevelUpAccumulateDeposit: 9999,
-			LevelKeepAccumulateBetAmount: 0,
-			LevelKeepAccumulateDeposit: 0,
-			LevelKeepCondition: true,
-			BirthBenefit: 299.0m,
-			PromotionBenefit: 288.0m,
-			QuarterlyBenefit: 266.0m,
-			LiveDealerRebate: 0.0m,
-			SlotRebate: 0.0m,
-			LotteryRebate: 0.0m,
-			CardGameRebate: 0.0m,
-			SportsRebate: 0.0m,
-			VirtualSportsRebate: 0.0m,
-			WithdrawTransactionsPerDay: -1,
-			WithdrawTotalAmountPerDay: -1);
-		var lower = new VipLevelInfoViewModel(
-			Id: playerVipLevelInfo.VipLevelId,
-			Level: 2,
-			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 5999,
-			LevelUpAccumulateDeposit: 4999,
-			LevelKeepAccumulateBetAmount: 0,
-			LevelKeepAccumulateDeposit: 0,
-			LevelKeepCondition: true,
-			BirthBenefit: 199.0m,
-			PromotionBenefit: 188.0m,
-			QuarterlyBenefit: 166.0m,
-			LiveDealerRebate: 0.0m,
-			SlotRebate: 0.0m,
-			LotteryRebate: 0.0m,
-			CardGameRebate: 0.0m,
-			SportsRebate: 0.0m,
-			VirtualSportsRebate: 0.0m,
-			WithdrawTransactionsPerDay: -1,
-			WithdrawTotalAmountPerDay: -1);
-		_ = fakeVipLevelUtensils.GetConditionsAsync(
-			brandId: Arg.Is(playerVipLevelInfo.BrandId),
-			level: Arg.Is(playerVipLevelInfo.VipLevel),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns<(VipLevelInfoViewModel Current, VipLevelInfoViewModel Higher, VipLevelInfoViewModel Lower)>((current, higher, lower));
-
+		
 		var sut = new UpgradeCheckCommandService(
 			fakeLog,
 			fakeVipLevelServiceClient,
-			fakeVipLevelUtensils,
 			fakeMessageSender);
 
 		await sut.ExecuteAsync(command);

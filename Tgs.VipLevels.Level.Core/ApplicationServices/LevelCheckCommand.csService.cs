@@ -12,7 +12,6 @@ namespace Tgs.VipLevels.Level.Core.ApplicationServices;
 internal class UpgradeCheckCommandService(
 	ILogger<UpgradeCheckCommandService> logger,
 	IVipLevelServiceClient vipLevelServiceClient,
-	IVipLevelUtensils vipLevelUtensils,
 	IMessageSender messageSender) : ICommandService<LevelCheckCommand>
 {
 	public async ValueTask ExecuteAsync(LevelCheckCommand command, CancellationToken cancellationToken = default)
@@ -31,29 +30,17 @@ internal class UpgradeCheckCommandService(
 			return;
 		}
 
-		(VipLevelInfoViewModel Current, VipLevelInfoViewModel Higher, _) = await vipLevelUtensils.GetConditionsAsync(
-			playerVipLevelInfo.BrandId,
-			playerVipLevelInfo.VipLevel,
-			cancellationToken)
-			.ConfigureAwait(false);
-
-		if (Current.Level == Higher.Level)
+		if (playerVipLevelInfo.FullLevel)
 		{
-			logger.LogWarning("LogOn:{logOn}  Message:This player is already the highest level.({playerCode}|{level})",
+			logger.LogWarning("LogOn:{logOn}  Message:This player's VIP level has reached the highest level.({playerCode}|{vipLevel})",
 				DateTime.Now.ToString("u"),
 				playerVipLevelInfo.PlayerCode,
 				playerVipLevelInfo.VipLevel);
 			return;
 		}
 
-		(decimal CurrentDeposit, decimal CurrentTurnover) = await vipLevelUtensils.GetCurrentExpAsync(
-			accumDepositId: playerVipLevelInfo.AccumDepositId,
-			accumTurnoverId: playerVipLevelInfo.AccumTurnoverId,
-			cancellationToken: cancellationToken)
-			.ConfigureAwait(false);
-
-		if (Current.LevelUpAccumulateDeposit <= CurrentDeposit &&
-			Current.LevelUpAccumulateBetAmount <= CurrentTurnover)
+		if (playerVipLevelInfo.LevelUpAccumulateDeposit <= playerVipLevelInfo.AccumDeposit &&
+			playerVipLevelInfo.LevelUpAccumulateBetAmount <= playerVipLevelInfo.LevelUpAccumulateBetAmount)
 		{
 			var message = new VipLevelsLevelMessage
 			{

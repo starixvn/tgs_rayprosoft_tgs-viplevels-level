@@ -27,6 +27,10 @@ public class LevelUpgradeCommandServiceUnitTest
 			PlayerCode: "4ucmqplxb029"
 		);
 
+		var nextVipLevelId = Guid.NewGuid();
+
+		var nextVipLevel = 3;
+
 		var playerVipLevelInfo = new PlayerVipLevelInfoViewModel(
 			ResellerId: Guid.NewGuid(),
 			ResellerCode: "Demo",
@@ -42,7 +46,12 @@ public class LevelUpgradeCommandServiceUnitTest
 			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
 			AccumTurnoverId: Guid.NewGuid(),
-			AccumTurnover: 5989);
+			AccumTurnover: 5989,
+			LevelUpAccumulateBetAmount: 5999,
+			LevelUpAccumulateDeposit: 4999,
+			FullLevel: false,
+			NextVipLevelId: nextVipLevelId,
+			NextVipLevel: nextVipLevel);
 		_ = fakeVipLevelServiceClient.PlayerVipLevelGetAsync(
 			playerCode: Arg.Is(command.PlayerCode),
 			cancellationToken: Arg.Any<CancellationToken>())
@@ -173,6 +182,10 @@ public class LevelUpgradeCommandServiceUnitTest
 			PlayerCode: "4ucmqplxb029"
 		);
 
+		var nextVipLevelId = Guid.NewGuid();
+
+		var nextVipLevel = 3;
+
 		var playerVipLevelInfo = new PlayerVipLevelInfoViewModel(
 			ResellerId: Guid.NewGuid(),
 			ResellerCode: "Demo",
@@ -188,7 +201,12 @@ public class LevelUpgradeCommandServiceUnitTest
 			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
 			AccumTurnoverId: Guid.NewGuid(),
-			AccumTurnover: 5989);
+			AccumTurnover: 5989,
+			LevelUpAccumulateBetAmount: 5999,
+			LevelUpAccumulateDeposit: 4999,
+			false,
+			nextVipLevelId,
+			nextVipLevel);
 		_ = fakeVipLevelServiceClient.PlayerVipLevelGetAsync(
 			playerCode: Arg.Is(command.PlayerCode),
 			cancellationToken: Arg.Any<CancellationToken>())
@@ -319,6 +337,10 @@ public class LevelUpgradeCommandServiceUnitTest
 			PlayerCode: "4ucmqplxb029"
 		);
 
+		var nextVipLevelId = Guid.NewGuid();
+
+		var nextVipLevel = 3;
+
 		var playerVipLevelInfo = new PlayerVipLevelInfoViewModel(
 			ResellerId: Guid.NewGuid(),
 			ResellerCode: "Demo",
@@ -334,7 +356,12 @@ public class LevelUpgradeCommandServiceUnitTest
 			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
 			AccumTurnoverId: Guid.NewGuid(),
-			AccumTurnover: 5989);
+			AccumTurnover: 5989,
+			LevelUpAccumulateBetAmount: 5999,
+			LevelUpAccumulateDeposit: 4999,
+			false,
+			nextVipLevelId,
+			nextVipLevel);
 		_ = fakeVipLevelServiceClient.PlayerVipLevelGetAsync(
 			playerCode: Arg.Is(command.PlayerCode),
 			cancellationToken: Arg.Any<CancellationToken>())
@@ -387,6 +414,10 @@ public class LevelUpgradeCommandServiceUnitTest
 			PlayerCode: "4ucmqplxb029"
 		);
 
+		var nextVipLevelId = Guid.NewGuid();
+
+		var nextVipLevel = 3;
+
 		var playerVipLevelInfo = new PlayerVipLevelInfoViewModel(
 			ResellerId: Guid.NewGuid(),
 			ResellerCode: "Demo",
@@ -396,21 +427,26 @@ public class LevelUpgradeCommandServiceUnitTest
 			BrandCode: "GPI",
 			PlayerCode: "4ucmqplxb029",
 			Username: "test",
-			VipLevelId: Guid.NewGuid(),
-			VipLevel: 3,
+			VipLevelId: nextVipLevelId,
+			VipLevel: nextVipLevel,
 			AutoState: PlayerVipLevelAutoState.Enable,
 			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
 			AccumTurnoverId: Guid.NewGuid(),
-			AccumTurnover: 5989);
+			AccumTurnover: 5989,
+			LevelUpAccumulateBetAmount: 5999,
+			LevelUpAccumulateDeposit: 4999,
+			FullLevel: true,
+			NextVipLevelId: nextVipLevelId,
+			NextVipLevel: nextVipLevel);
 		_ = fakeVipLevelServiceClient.PlayerVipLevelGetAsync(
 			playerCode: Arg.Is(command.PlayerCode),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns(playerVipLevelInfo);
 
 		var current = new VipLevelInfoViewModel(
-			Id: playerVipLevelInfo.VipLevelId,
-			Level: 3,
+			Id: nextVipLevelId,
+			Level: nextVipLevel,
 			BrandId: playerVipLevelInfo.BrandId,
 			LevelUpAccumulateBetAmount: 10999,
 			LevelUpAccumulateDeposit: 9999,
@@ -429,8 +465,8 @@ public class LevelUpgradeCommandServiceUnitTest
 			WithdrawTransactionsPerDay: -1,
 			WithdrawTotalAmountPerDay: -1);
 		var higher = new VipLevelInfoViewModel(
-			Id: playerVipLevelInfo.VipLevelId,
-			Level: 3,
+			Id: nextVipLevelId,
+			Level: nextVipLevel,
 			BrandId: playerVipLevelInfo.BrandId,
 			LevelUpAccumulateBetAmount: 10999,
 			LevelUpAccumulateDeposit: 9999,
@@ -449,7 +485,7 @@ public class LevelUpgradeCommandServiceUnitTest
 			WithdrawTransactionsPerDay: -1,
 			WithdrawTotalAmountPerDay: -1);
 		var lower = new VipLevelInfoViewModel(
-			Id: playerVipLevelInfo.VipLevelId,
+			Id: Guid.NewGuid(),
 			Level: 2,
 			BrandId: playerVipLevelInfo.BrandId,
 			LevelUpAccumulateBetAmount: 5999,
