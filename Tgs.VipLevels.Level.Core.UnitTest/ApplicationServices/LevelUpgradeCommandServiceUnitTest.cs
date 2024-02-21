@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Logging.Abstractions;
+﻿using System.Threading;
+using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
+using Tgs.ServiceUtility;
 using Tgs.VipLevels.Level.Common;
 using Tgs.VipLevels.Level.Common.Protos;
 using Tgs.VipLevels.Level.Core.ApplicationServices;
-using Tgs.VipLevels.Upgrade.Common;
-using Tgs.VipLevels.Upgrade.Common.Protos;
 using Tgs.VipLevelService.Clients;
 using Tgs.VipLevelService.Common;
 using Tgs.VipLevelService.Common.ViewModels;
@@ -20,6 +20,7 @@ public class LevelUpgradeCommandServiceUnitTest
 		var fakeLog = NullLogger<LevelUpgradeCommandService>.Instance;
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
 		var fakeVipLevelUtensils = Substitute.For<IVipLevelUtensils>();
+		var fakeLevelUpgradeFormCreateService = Substitute.For<ICommandService<LevelUpgradeFormCreateCommand>>();
 		var fakeMessageSender = Substitute.For<IMessageSender>();
 
 		var command = new LevelUpgradeCommand
@@ -135,6 +136,7 @@ public class LevelUpgradeCommandServiceUnitTest
 			fakeLog,
 			fakeVipLevelServiceClient,
 			fakeVipLevelUtensils,
+			fakeLevelUpgradeFormCreateService,
 			fakeMessageSender);
 
 		await sut.ExecuteAsync(command);
@@ -147,15 +149,12 @@ public class LevelUpgradeCommandServiceUnitTest
 			vipLevelId: higher.Id,
 			cancellationToken: Arg.Any<CancellationToken>());
 
-		_ = fakeMessageSender
+		_ = fakeLevelUpgradeFormCreateService
 			.Received(1)
-			.PublishAsync(
-			subject: Arg.Is(VipLevelsUpgradeNatsConst.Create),
-			data: Arg.Is(new VipLevelsUpgradeMessage
-			{
-				PlayerCode = playerVipLevelInfo.PlayerCode,
-				VipLevel = higher.Level,
-			}),
+			.ExecuteAsync(
+			command: Arg.Is(new LevelUpgradeFormCreateCommand(
+				PlayerCode: playerVipLevelInfo.PlayerCode,
+				VipLevel: higher.Level)),
 			cancellationToken: Arg.Any<CancellationToken>());
 
 		_ = fakeMessageSender
@@ -175,6 +174,7 @@ public class LevelUpgradeCommandServiceUnitTest
 		var fakeLog = NullLogger<LevelUpgradeCommandService>.Instance;
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
 		var fakeVipLevelUtensils = Substitute.For<IVipLevelUtensils>();
+		var fakeLevelUpgradeFormCreateService = Substitute.For<ICommandService<LevelUpgradeFormCreateCommand>>();
 		var fakeMessageSender = Substitute.For<IMessageSender>();
 
 		var command = new LevelUpgradeCommand
@@ -290,6 +290,7 @@ public class LevelUpgradeCommandServiceUnitTest
 			fakeLog,
 			fakeVipLevelServiceClient,
 			fakeVipLevelUtensils,
+			fakeLevelUpgradeFormCreateService,
 			fakeMessageSender);
 
 		await sut.ExecuteAsync(command);
@@ -302,15 +303,12 @@ public class LevelUpgradeCommandServiceUnitTest
 			vipLevelId: higher.Id,
 			cancellationToken: Arg.Any<CancellationToken>());
 
-		_ = fakeMessageSender
+		_ = fakeLevelUpgradeFormCreateService
 			.Received(0)
-			.PublishAsync(
-			subject: Arg.Is(VipLevelsUpgradeNatsConst.Create),
-			data: Arg.Is(new VipLevelsUpgradeMessage
-			{
-				PlayerCode = playerVipLevelInfo.PlayerCode,
-				VipLevel = higher.Level,
-			}),
+			.ExecuteAsync(
+			command: Arg.Is(new LevelUpgradeFormCreateCommand(
+				PlayerCode: playerVipLevelInfo.PlayerCode,
+				VipLevel: higher.Level)),
 			cancellationToken: Arg.Any<CancellationToken>());
 
 		_ = fakeMessageSender
@@ -330,6 +328,7 @@ public class LevelUpgradeCommandServiceUnitTest
 		var fakeLog = NullLogger<LevelUpgradeCommandService>.Instance;
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
 		var fakeVipLevelUtensils = Substitute.For<IVipLevelUtensils>();
+		var fakeLevelUpgradeFormCreateService = Substitute.For<ICommandService<LevelUpgradeFormCreateCommand>>();
 		var fakeMessageSender = Substitute.For<IMessageSender>();
 
 		var command = new LevelUpgradeCommand
@@ -359,9 +358,9 @@ public class LevelUpgradeCommandServiceUnitTest
 			AccumTurnover: 5989,
 			LevelUpAccumulateBetAmount: 5999,
 			LevelUpAccumulateDeposit: 4999,
-			false,
-			nextVipLevelId,
-			nextVipLevel);
+			FullLevel: false,
+			NextVipLevelId: nextVipLevelId,
+			NextVipLevel: nextVipLevel);
 		_ = fakeVipLevelServiceClient.PlayerVipLevelGetAsync(
 			playerCode: Arg.Is(command.PlayerCode),
 			cancellationToken: Arg.Any<CancellationToken>())
@@ -371,6 +370,7 @@ public class LevelUpgradeCommandServiceUnitTest
 			fakeLog,
 			fakeVipLevelServiceClient,
 			fakeVipLevelUtensils,
+			fakeLevelUpgradeFormCreateService,
 			fakeMessageSender);
 
 		await sut.ExecuteAsync(command);
@@ -383,11 +383,10 @@ public class LevelUpgradeCommandServiceUnitTest
 			vipLevelId: Arg.Any<Guid>(),
 			cancellationToken: Arg.Any<CancellationToken>());
 
-		_ = fakeMessageSender
+		_ = fakeLevelUpgradeFormCreateService
 			.Received(0)
-			.PublishAsync(
-			subject: Arg.Is(VipLevelsUpgradeNatsConst.Create),
-			data: Arg.Any<VipLevelsUpgradeMessage>(),
+			.ExecuteAsync(
+			command: Arg.Any<LevelUpgradeFormCreateCommand>(),
 			cancellationToken: Arg.Any<CancellationToken>());
 
 		_ = fakeMessageSender
@@ -407,6 +406,7 @@ public class LevelUpgradeCommandServiceUnitTest
 		var fakeLog = NullLogger<LevelUpgradeCommandService>.Instance;
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
 		var fakeVipLevelUtensils = Substitute.For<IVipLevelUtensils>();
+		var fakeLevelUpgradeFormCreateService = Substitute.For<ICommandService<LevelUpgradeFormCreateCommand>>();
 		var fakeMessageSender = Substitute.For<IMessageSender>();
 
 		var command = new LevelUpgradeCommand
@@ -514,6 +514,7 @@ public class LevelUpgradeCommandServiceUnitTest
 			fakeLog,
 			fakeVipLevelServiceClient,
 			fakeVipLevelUtensils,
+			fakeLevelUpgradeFormCreateService,
 			fakeMessageSender);
 
 		await sut.ExecuteAsync(command);
@@ -526,11 +527,12 @@ public class LevelUpgradeCommandServiceUnitTest
 			vipLevelId: higher.Id,
 			cancellationToken: Arg.Any<CancellationToken>());
 
-		_ = fakeMessageSender
+		_ = fakeLevelUpgradeFormCreateService
 			.Received(0)
-			.PublishAsync(
-			subject: Arg.Is(VipLevelsUpgradeNatsConst.Create),
-			data: Arg.Any<VipLevelsUpgradeMessage>(),
+			.ExecuteAsync(
+			command: Arg.Is(new LevelUpgradeFormCreateCommand(
+				PlayerCode: playerVipLevelInfo.PlayerCode,
+				VipLevel: higher.Level)),
 			cancellationToken: Arg.Any<CancellationToken>());
 
 		_ = fakeMessageSender

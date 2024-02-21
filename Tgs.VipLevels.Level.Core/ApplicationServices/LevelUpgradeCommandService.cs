@@ -2,8 +2,6 @@
 using Tgs.ServiceUtility;
 using Tgs.VipLevels.Level.Common;
 using Tgs.VipLevels.Level.Common.Protos;
-using Tgs.VipLevels.Upgrade.Common;
-using Tgs.VipLevels.Upgrade.Common.Protos;
 using Tgs.VipLevelService.Clients;
 using Tgs.VipLevelService.Common;
 using Tgs.VipLevelService.Common.ViewModels;
@@ -15,6 +13,7 @@ internal class LevelUpgradeCommandService(
 	ILogger<LevelUpgradeCommandService> logger,
 	IVipLevelServiceClient client,
 	IVipLevelUtensils utensils,
+	ICommandService<LevelUpgradeFormCreateCommand> service,
 	IMessageSender messageSender) : ICommandService<LevelUpgradeCommand>
 {
 	public async ValueTask ExecuteAsync(LevelUpgradeCommand command, CancellationToken cancellationToken = default)
@@ -64,22 +63,12 @@ internal class LevelUpgradeCommandService(
 				cancellationToken: cancellationToken)
 				.ConfigureAwait(false);
 
-			var upgradeMessage = new VipLevelsUpgradeMessage
-			{
-				PlayerCode = playerVipLevelInfo.PlayerCode,
-				VipLevel = Higher.Level
-			};
-
-			await messageSender.PublishAsync(
-				subject: VipLevelsUpgradeNatsConst.Create,
-				data: upgradeMessage,
+			await service.ExecuteAsync(
+				command: new LevelUpgradeFormCreateCommand(
+					PlayerCode: playerVipLevelInfo.PlayerCode,
+					VipLevel: Higher.Level),
 				cancellationToken: cancellationToken)
 				.ConfigureAwait(false);
-
-			logger.LogInformation("LogOn:{logOn} Subject:{subject} Message:This message has been published.({message})",
-				DateTime.Now.ToString("u"),
-				VipLevelsUpgradeNatsConst.Create,
-				upgradeMessage);
 
 			var message = new VipLevelsLevelMessage
 			{

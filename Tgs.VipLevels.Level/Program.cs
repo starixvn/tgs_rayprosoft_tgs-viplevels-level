@@ -10,7 +10,6 @@ using OpenTelemetry.Trace;
 using Tgs.MessageQueue.Nats.Serializers;
 using Tgs.VipLevels.Level.Common;
 using Tgs.VipLevels.Level.Messages;
-using Tgs.VipLevels.Upgrade.Common;
 
 var filterInstrumentations = new[] { "html", "ico", "png", "jpg" };
 
@@ -61,9 +60,9 @@ builder.Services
 	.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
 	.AddHandler<LevelCheckMessageHandler>(VipLevelsLevelNatsConst.Check, VipLevelsLevelNatsConst.Check)
 	.AddHandler<LevelUpgradeMessageHandler>(VipLevelsLevelNatsConst.Upgrade, VipLevelsLevelNatsConst.Upgrade))
+	.ClearAllExchanges()
 	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.Check)
-	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.Upgrade)
-	.AddNatsGlobPatternExchange(VipLevelsUpgradeNatsConst.Create);
+	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.Upgrade);
 
 builder.Services
 	.AddOpenTelemetry()
