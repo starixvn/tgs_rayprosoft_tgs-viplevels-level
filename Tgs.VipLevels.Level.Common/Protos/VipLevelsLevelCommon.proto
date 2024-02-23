@@ -2,6 +2,7 @@
 
 //import "phoenix/protobuf/guid.proto";
 //import "phoenix/protobuf/decimal.proto";
+import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "Tgs.VipLevels.Level.Common.Protos";
 
@@ -14,4 +15,9 @@ package viplevelslevelcommon;
 message VipLevelsLevelMessage {
     // 玩家代碼
     string player_code = 1;
+}
+
+message VipLevelsLevelTriggerMessage {
+    // 玩家代碼
+    google.protobuf.Timestamp trigger_at = 1;
 }

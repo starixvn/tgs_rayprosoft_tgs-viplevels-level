@@ -40,9 +40,7 @@ public class UpgradeCheckCommandServiceUnitTest
 			VipLevelId: Guid.NewGuid(),
 			VipLevel: 2,
 			AutoState: PlayerVipLevelAutoState.Enable,
-			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 6000,
-			AccumTurnoverId: Guid.NewGuid(),
 			AccumTurnover: 5000,
 			LevelUpAccumulateBetAmount: 5999,
 			LevelUpAccumulateDeposit: 4999,
@@ -100,9 +98,7 @@ public class UpgradeCheckCommandServiceUnitTest
 			VipLevelId: Guid.NewGuid(),
 			VipLevel: 2,
 			AutoState: PlayerVipLevelAutoState.Enable,
-			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
-			AccumTurnoverId: Guid.NewGuid(),
 			AccumTurnover: 5989,
 			LevelUpAccumulateBetAmount: 5999,
 			LevelUpAccumulateDeposit: 4999,
@@ -160,9 +156,7 @@ public class UpgradeCheckCommandServiceUnitTest
 			VipLevelId: Guid.NewGuid(),
 			VipLevel: 2,
 			AutoState: PlayerVipLevelAutoState.Disable,
-			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
-			AccumTurnoverId: Guid.NewGuid(),
 			AccumTurnover: 5989,
 			LevelUpAccumulateBetAmount: 5999,
 			LevelUpAccumulateDeposit: 4999,
@@ -204,7 +198,7 @@ public class UpgradeCheckCommandServiceUnitTest
 			PlayerCode: "4ucmqplxb029"
 		);
 
-		var vipLevelId=Guid.NewGuid();
+		var vipLevelId = Guid.NewGuid();
 		var vipLevel = 3;
 
 		var playerVipLevelInfo = new PlayerVipLevelInfoViewModel(
@@ -219,9 +213,7 @@ public class UpgradeCheckCommandServiceUnitTest
 			VipLevelId: vipLevelId,
 			VipLevel: vipLevel,
 			AutoState: PlayerVipLevelAutoState.Enable,
-			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
-			AccumTurnoverId: Guid.NewGuid(),
 			AccumTurnover: 5989,
 			LevelUpAccumulateBetAmount: 10999,
 			LevelUpAccumulateDeposit: 9999,
@@ -233,7 +225,6 @@ public class UpgradeCheckCommandServiceUnitTest
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns(playerVipLevelInfo);
 
-		
 		var sut = new UpgradeCheckCommandService(
 			fakeLog,
 			fakeVipLevelServiceClient,

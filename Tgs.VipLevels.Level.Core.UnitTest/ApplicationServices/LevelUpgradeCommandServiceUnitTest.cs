@@ -44,10 +44,8 @@ public class LevelUpgradeCommandServiceUnitTest
 			VipLevelId: Guid.NewGuid(),
 			VipLevel: 2,
 			AutoState: PlayerVipLevelAutoState.Enable,
-			AccumDepositId: Guid.NewGuid(),
-			AccumDeposit: 4989,
-			AccumTurnoverId: Guid.NewGuid(),
-			AccumTurnover: 5989,
+			AccumDeposit: 5000,
+			AccumTurnover: 6000,
 			LevelUpAccumulateBetAmount: 5999,
 			LevelUpAccumulateDeposit: 4999,
 			FullLevel: false,
@@ -102,8 +100,8 @@ public class LevelUpgradeCommandServiceUnitTest
 			Id: Guid.NewGuid(),
 			Level: 1,
 			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 1999,
-			LevelUpAccumulateDeposit: 999,
+			LevelUpAccumulateBetAmount: 6001m,
+			LevelUpAccumulateDeposit: 5001m,
 			LevelKeepAccumulateBetAmount: 0,
 			LevelKeepAccumulateDeposit: 0,
 			LevelKeepCondition: true,
@@ -123,14 +121,6 @@ public class LevelUpgradeCommandServiceUnitTest
 			level: Arg.Is(playerVipLevelInfo.VipLevel),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns<(VipLevelInfoViewModel Current, VipLevelInfoViewModel Higher, VipLevelInfoViewModel Lower)>((current, higher, lower));
-
-		decimal currentDeposit = 5001m;
-		decimal CurrentTurnover = 6001m;
-		_ = fakeVipLevelUtensils.GetCurrentExpAsync(
-			accumDepositId: Arg.Is(playerVipLevelInfo.AccumDepositId),
-			accumTurnoverId: Arg.Is(playerVipLevelInfo.AccumTurnoverId),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns<(decimal CurrentDeposit, decimal CurrentTurnover)>((currentDeposit, CurrentTurnover));
 
 		var sut = new LevelUpgradeCommandService(
 			fakeLog,
@@ -198,9 +188,7 @@ public class LevelUpgradeCommandServiceUnitTest
 			VipLevelId: Guid.NewGuid(),
 			VipLevel: 2,
 			AutoState: PlayerVipLevelAutoState.Enable,
-			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
-			AccumTurnoverId: Guid.NewGuid(),
 			AccumTurnover: 5989,
 			LevelUpAccumulateBetAmount: 5999,
 			LevelUpAccumulateDeposit: 4999,
@@ -256,8 +244,8 @@ public class LevelUpgradeCommandServiceUnitTest
 			Id: Guid.NewGuid(),
 			Level: 1,
 			BrandId: playerVipLevelInfo.BrandId,
-			LevelUpAccumulateBetAmount: 1999,
-			LevelUpAccumulateDeposit: 999,
+			LevelUpAccumulateBetAmount: 6001m,
+			LevelUpAccumulateDeposit: 4998m,
 			LevelKeepAccumulateBetAmount: 0,
 			LevelKeepAccumulateDeposit: 0,
 			LevelKeepCondition: true,
@@ -277,14 +265,6 @@ public class LevelUpgradeCommandServiceUnitTest
 			level: Arg.Is(playerVipLevelInfo.VipLevel),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns<(VipLevelInfoViewModel Current, VipLevelInfoViewModel Higher, VipLevelInfoViewModel Lower)>((current, higher, lower));
-
-		decimal currentDeposit = 4998m;
-		decimal CurrentTurnover = 6001m;
-		_ = fakeVipLevelUtensils.GetCurrentExpAsync(
-			accumDepositId: Arg.Is(playerVipLevelInfo.AccumDepositId),
-			accumTurnoverId: Arg.Is(playerVipLevelInfo.AccumTurnoverId),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns<(decimal CurrentDeposit, decimal CurrentTurnover)>((currentDeposit, CurrentTurnover));
 
 		var sut = new LevelUpgradeCommandService(
 			fakeLog,
@@ -352,9 +332,7 @@ public class LevelUpgradeCommandServiceUnitTest
 			VipLevelId: Guid.NewGuid(),
 			VipLevel: 2,
 			AutoState: PlayerVipLevelAutoState.Disable,
-			AccumDepositId: Guid.NewGuid(),
 			AccumDeposit: 4989,
-			AccumTurnoverId: Guid.NewGuid(),
 			AccumTurnover: 5989,
 			LevelUpAccumulateBetAmount: 5999,
 			LevelUpAccumulateDeposit: 4999,
@@ -430,10 +408,8 @@ public class LevelUpgradeCommandServiceUnitTest
 			VipLevelId: nextVipLevelId,
 			VipLevel: nextVipLevel,
 			AutoState: PlayerVipLevelAutoState.Enable,
-			AccumDepositId: Guid.NewGuid(),
-			AccumDeposit: 4989,
-			AccumTurnoverId: Guid.NewGuid(),
-			AccumTurnover: 5989,
+			AccumDeposit: 6001,
+			AccumTurnover: 5001,
 			LevelUpAccumulateBetAmount: 5999,
 			LevelUpAccumulateDeposit: 4999,
 			FullLevel: true,

@@ -1,21 +1,23 @@
-﻿namespace Microsoft.Extensions.DependencyInjection;
+﻿using Tgs.VipLevels.Level;
+
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
 	public static IServiceCollection AddVipLevelsLevel(
-		this IServiceCollection services)
+		this IServiceCollection services,
+		Action<RedisOptions, IServiceProvider> redisOptions,
+		Action<MongoDBOptions, IServiceProvider> mongoDBconfigure)
 		=> services
-		.AddVipLevelServiceClient((httpClientBuilder) =>
-		httpClientBuilder.ConfigureHttpClient((sp, http) =>
-		{
-			var configuration = sp.GetRequiredService<IConfiguration>();
-			http.BaseAddress = configuration.GetValue<Uri>("VipLevelConnectionStrings:VipLevelServiceClientBaseUrl")!;
-		}))
-		.AddCalculateClient((httpClientBuilder) =>
-		httpClientBuilder.ConfigureHttpClient((sp, http) =>
-		{
-			var configuration = sp.GetRequiredService<IConfiguration>();
-			http.BaseAddress = configuration.GetValue<Uri>("VipLevelConnectionStrings:CalculateClientBaseUrl")!;
-		}))
-		.AddVipLevelsLevelCore();
+		.AddOptions<RedisOptions>()
+		.Configure(redisOptions)
+		.Services
+		.AddOptions<MongoDBOptions>()
+		.Configure(mongoDBconfigure)
+		.Services
+		.AddSingleton<RedisConnectionManager>()
+		.AddSingleton<MongoDBConnectionManager>()
+		.AddSingleton(TimeProvider.System)
+		.AddVipLevelsLevelCore()
+		.AddVipLevelsLevelRepositories((sp) => sp.GetRequiredService<MongoDBConnectionManager>().MongoDatabase);
 }

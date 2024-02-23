@@ -1,6 +1,5 @@
 ﻿using ExpectedObjects;
 using NSubstitute;
-using Tgs.Calculate.Clients;
 using Tgs.VipLevelService.Clients;
 using Tgs.VipLevelService.Common.ViewModels;
 
@@ -15,7 +14,6 @@ public class VipLevelUtensilsUnitTest
 		int level = 2;
 
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
-		var fakeCalculateClient = Substitute.For<ICalculateClient>();
 
 		var snapshotId = Guid.NewGuid();
 		_ = fakeVipLevelServiceClient.VipLevelSnapshotCurrentSnapshotIdAsync(
@@ -91,8 +89,7 @@ public class VipLevelUtensilsUnitTest
 			.Returns(vipLevelInfos.ToAsyncEnumerable());
 
 		var sut = new VipLevelUtensils(
-			fakeVipLevelServiceClient,
-			fakeCalculateClient);
+			fakeVipLevelServiceClient);
 
 		(VipLevelInfoViewModel Current, VipLevelInfoViewModel Higher, VipLevelInfoViewModel Lower) = await sut.GetConditionsAsync(brandId, level);
 
@@ -108,7 +105,6 @@ public class VipLevelUtensilsUnitTest
 		int level = 1;
 
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
-		var fakeCalculateClient = Substitute.For<ICalculateClient>();
 
 		var snapshotId = Guid.NewGuid();
 		_ = fakeVipLevelServiceClient.VipLevelSnapshotCurrentSnapshotIdAsync(
@@ -184,8 +180,7 @@ public class VipLevelUtensilsUnitTest
 			.Returns(vipLevelInfos.ToAsyncEnumerable());
 
 		var sut = new VipLevelUtensils(
-			fakeVipLevelServiceClient,
-			fakeCalculateClient);
+			fakeVipLevelServiceClient);
 
 		(VipLevelInfoViewModel Current, VipLevelInfoViewModel Higher, VipLevelInfoViewModel Lower) = await sut.GetConditionsAsync(brandId, level);
 
@@ -201,7 +196,6 @@ public class VipLevelUtensilsUnitTest
 		int level = 3;
 
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
-		var fakeCalculateClient = Substitute.For<ICalculateClient>();
 
 		var snapshotId = Guid.NewGuid();
 		_ = fakeVipLevelServiceClient.VipLevelSnapshotCurrentSnapshotIdAsync(
@@ -277,8 +271,7 @@ public class VipLevelUtensilsUnitTest
 			.Returns(vipLevelInfos.ToAsyncEnumerable());
 
 		var sut = new VipLevelUtensils(
-			fakeVipLevelServiceClient,
-			fakeCalculateClient);
+			fakeVipLevelServiceClient);
 
 		(VipLevelInfoViewModel Current, VipLevelInfoViewModel Higher, VipLevelInfoViewModel Lower) = await sut.GetConditionsAsync(brandId, level);
 
@@ -294,7 +287,6 @@ public class VipLevelUtensilsUnitTest
 		int level = 2;
 
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
-		var fakeCalculateClient = Substitute.For<ICalculateClient>();
 
 		var vipLevelInfos = new VipLevelInfoViewModel[] {
 			new(
@@ -364,48 +356,10 @@ public class VipLevelUtensilsUnitTest
 			.Returns(vipLevelInfos.ToAsyncEnumerable());
 
 		var sut = new VipLevelUtensils(
-			fakeVipLevelServiceClient,
-			fakeCalculateClient);
+			fakeVipLevelServiceClient);
 
 		var actual = await sut.GetVipLevelInfoAsync(snapshotId, level);
 
 		vipLevelInfos.ElementAt(1).ToExpectedObject().ShouldEqual(actual);
-	}
-
-	[Fact]
-	public async void GetCurrentExp_Normal_Process()
-	{
-		Guid accumDepositId = Guid.NewGuid();
-		Guid accumTurnoverId = Guid.NewGuid();
-
-		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
-		var fakeCalculateClient = Substitute.For<ICalculateClient>();
-
-		_ = fakeCalculateClient
-			.GetBalanceAsync(
-			calculateId: Arg.Is(accumDepositId),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns(new ExchangeResult(
-				Id: accumDepositId,
-				PostBalance: 99.0m
-			));
-
-		_ = fakeCalculateClient
-			.GetBalanceAsync(
-			calculateId: Arg.Is(accumTurnoverId),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns(new ExchangeResult(
-				Id: accumDepositId,
-		PostBalance: 88.0m
-		));
-
-		var sut = new VipLevelUtensils(
-			fakeVipLevelServiceClient,
-			fakeCalculateClient);
-
-		(decimal CurrentDeposit, decimal CurrentTurnover) = await sut.GetCurrentExpAsync(accumDepositId, accumTurnoverId);
-
-		Assert.Equal(99.0m, CurrentDeposit);
-		Assert.Equal(88.0m, CurrentTurnover);
 	}
 }

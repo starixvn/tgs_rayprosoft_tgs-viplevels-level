@@ -3,6 +3,7 @@ using Tgs.ServiceUtility;
 using Tgs.VipLevelService.Clients;
 
 namespace Tgs.VipLevels.Level.Core.ApplicationServices;
+
 internal class LevelUpgradeFormCreateCommandService(
 	ILogger<LevelUpgradeFormCreateCommandService> logger,
 	IVipLevelServiceClient vipLevelServiceClient) : ICommandService<LevelUpgradeFormCreateCommand>

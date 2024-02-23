@@ -13,9 +13,9 @@ data:
           "Default": "Information"
         }
       },
-      "VipLevelConnectionStrings": {
+      "VipLevelsLevelConnectionStrings": {
         "VipLevelServiceClientBaseUrl": "http://tgs-viplevel",
-        "CalculateClientBaseUrl": "http://tgs-calculate-api"
+        "PaymentServiceClientBaseUrl": "http://payment-api"
       }
     }
   otel-collector-config.yaml: |

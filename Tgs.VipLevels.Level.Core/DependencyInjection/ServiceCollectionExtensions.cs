@@ -12,5 +12,7 @@ public static class ServiceCollectionExtensions
 			Assembly.GetExecutingAssembly(),
 			ServiceLifetime.Transient)
 		.AddSingleton<IVipLevelUtensils, VipLevelUtensils>()
+		.AddSingleton<ITriggerTimeUtnsil, TriggerTimeUtnsil>()
+		.AddSingleton<IHangfireUtensil, HangfireUtensil>()
 		.AddSingleton<ILevelUpgradeDispatcher, LevelUpgradeDispatcher>();
 }

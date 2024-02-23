@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.VipLevels.Level", "Tgs.VipLevels.Level\Tgs.VipLevels.Level.csproj", "{E2C9F48B-04B2-4DF8-BF82-9E0787FED596}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.VipLevels.Level", "Tgs.VipLevels.Level\Tgs.VipLevels.Level.csproj", "{E2C9F48B-04B2-4DF8-BF82-9E0787FED596}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.VipLevels.Level.Core", "Tgs.VipLevels.Level.Core\Tgs.VipLevels.Level.Core.csproj", "{602016DD-AEC1-4F87-8D04-ADC5C391F296}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.VipLevels.Level.Core", "Tgs.VipLevels.Level.Core\Tgs.VipLevels.Level.Core.csproj", "{602016DD-AEC1-4F87-8D04-ADC5C391F296}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.VipLevels.Level.Common", "Tgs.VipLevels.Level.Common\Tgs.VipLevels.Level.Common.csproj", "{2970F2EF-88CA-480F-8BF7-DFBCF07728CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.VipLevels.Level.Common", "Tgs.VipLevels.Level.Common\Tgs.VipLevels.Level.Common.csproj", "{2970F2EF-88CA-480F-8BF7-DFBCF07728CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.VipLevels.Level.Core.UnitTest", "Tgs.VipLevels.Level.Core.UnitTest\Tgs.VipLevels.Level.Core.UnitTest.csproj", "{AC8BD2CB-9F4C-46B6-96A5-8B3331A4CE0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.VipLevels.Level.Core.UnitTest", "Tgs.VipLevels.Level.Core.UnitTest\Tgs.VipLevels.Level.Core.UnitTest.csproj", "{AC8BD2CB-9F4C-46B6-96A5-8B3331A4CE0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.VipLevels.Level.Client", "Tgs.VipLevels.Level.Client\Tgs.VipLevels.Level.Client.csproj", "{1C957CE3-942B-4CA3-98BE-E2FEF1D52D3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tgs.VipLevels.Level.Client", "Tgs.VipLevels.Level.Client\Tgs.VipLevels.Level.Client.csproj", "{1C957CE3-942B-4CA3-98BE-E2FEF1D52D3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tgs.VipLevels.Level.Repositories", "Tgs.VipLevels.Level.Repositories\Tgs.VipLevels.Level.Repositories.csproj", "{EF644FA2-19AA-4F72-BA85-75D35207B99E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{1C957CE3-942B-4CA3-98BE-E2FEF1D52D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C957CE3-942B-4CA3-98BE-E2FEF1D52D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C957CE3-942B-4CA3-98BE-E2FEF1D52D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF644FA2-19AA-4F72-BA85-75D35207B99E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF644FA2-19AA-4F72-BA85-75D35207B99E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF644FA2-19AA-4F72-BA85-75D35207B99E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF644FA2-19AA-4F72-BA85-75D35207B99E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,6 @@ using Tgs.VipLevels.Level.Common;
 using Tgs.VipLevels.Level.Common.Protos;
 using Tgs.VipLevelService.Clients;
 using Tgs.VipLevelService.Common;
-using Tgs.VipLevelService.Common.ViewModels;
 using Valhalla.MessageQueue;
 
 namespace Tgs.VipLevels.Level.Core.ApplicationServices;

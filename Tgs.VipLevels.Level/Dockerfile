@@ -13,6 +13,7 @@ COPY ["nuget.config", "."]
 COPY ["Tgs.VipLevels.Level/Tgs.VipLevels.Level.csproj", "Tgs.VipLevels.Level/"]
 COPY ["Tgs.VipLevels.Level.Common/Tgs.VipLevels.Level.Common.csproj", "Tgs.VipLevels.Level.Common/"]
 COPY ["Tgs.VipLevels.Level.Core/Tgs.VipLevels.Level.Core.csproj", "Tgs.VipLevels.Level.Core/"]
+COPY ["Tgs.VipLevels.Level.Repositories/Tgs.VipLevels.Level.Repositories.csproj", "Tgs.VipLevels.Level.Repositories/"]
 RUN dotnet restore "./Tgs.VipLevels.Level/./Tgs.VipLevels.Level.csproj"
 COPY . .
 WORKDIR "/src/Tgs.VipLevels.Level"

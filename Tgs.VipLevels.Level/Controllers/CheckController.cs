@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tgs.VipLevels.Level.Common;
 using Tgs.VipLevels.Level.Common.Protos;
-using Tgs.VipLevels.Level.ViewModels;
 using Valhalla.MessageQueue;
 
 namespace Tgs.VipLevels.Level.Controllers;
@@ -14,24 +13,16 @@ public class CheckController : ControllerBase
 	/// Executes the asynchronous.
 	/// </summary>
 	/// <param name="messageSender">The message sender.</param>
-	/// <param name="source">The source.</param>
+	/// <param name="playerCode">The player code.</param>
 	/// <returns></returns>
-	/// <remarks>
-	/// <b>Example</b><br />
-	///
-	///     Post
-	///         {
-	///             "PlayerCode": "4um1qf1p0v3z"
-	///         }
-	/// </remarks>
-	[HttpPost(Name = "Check_Execute")]
+	[HttpPost("{playerCode}", Name = "Check_Execute")]
 	public ValueTask ExecuteAsync(
 		[FromServices] IMessageSender messageSender,
-		[FromBody] VipLevelsLevelViewModel source)
+		string playerCode)
 	{
 		var publish = new VipLevelsLevelMessage
 		{
-			PlayerCode = source.PlayerCode
+			PlayerCode = playerCode
 		};
 
 		return messageSender.PublishAsync(

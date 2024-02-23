@@ -1,13 +1,16 @@
 ﻿using System.Net.Mime;
 using System.Text.Json.Serialization;
-
+using Hangfire;
+using Hangfire.Redis.StackExchange;
 using Microsoft.AspNetCore.Mvc;
 using NATS.Client.Core;
 using OpenTelemetry.Metrics;
 
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Tgs.GameRecord.Handle.Common;
 using Tgs.MessageQueue.Nats.Serializers;
+using Tgs.VipLevels.Level;
 using Tgs.VipLevels.Level.Common;
 using Tgs.VipLevels.Level.Messages;
 
@@ -47,7 +50,46 @@ builder.Services.AddSwaggerGen(c =>
 		c.IncludeXmlComments(xmlFileName);
 });
 
-builder.Services.AddVipLevelsLevel();
+// Learn more about configuring Hangfire
+builder
+	.Services
+	.AddHangfire((sp, config) =>
+	{
+		var systemConfig = sp.GetRequiredService<IConfiguration>();
+		var connectionString = builder.Configuration.GetConnectionString("Redis")!;
+		var options = new RedisStorageOptions
+		{
+			Prefix = "viplevels-level-schedule:hangfire:"
+		};
+		_ = config
+		.UseRedisStorage(connectionString, options)
+		.WithJobExpirationTimeout(TimeSpan.FromMinutes(30));
+	})
+	.AddHangfireServer();
+
+builder.Services.AddVipLevelsLevel(
+	(options, sp) =>
+	{
+		var configuration = sp.GetRequiredService<IConfiguration>();
+		options.ConnectionString = configuration.GetConnectionString("Redis")!;
+	},
+	(options, sp) =>
+	{
+		var configuration = sp.GetRequiredService<IConfiguration>();
+		options.ConnectionString = configuration.GetConnectionString("Mongo")!;
+	})
+	.AddVipLevelServiceClient((httpClientBuilder) =>
+		httpClientBuilder.ConfigureHttpClient((sp, http) =>
+		{
+			var configuration = sp.GetRequiredService<IConfiguration>();
+			http.BaseAddress = configuration.GetValue<Uri>("VipLevelsLevelConnectionStrings:VipLevelServiceClientBaseUrl")!;
+		}))
+	.AddPaymentServiceClient((httpClientBuilder) =>
+		httpClientBuilder.ConfigureHttpClient((sp, http) =>
+		{
+			var configuration = sp.GetRequiredService<IConfiguration>();
+			http.BaseAddress = configuration.GetValue<Uri>("VipLevelsLevelConnectionStrings:PaymentServiceClientBaseUrl")!;
+		}));
 
 builder.Services
 	.AddKeyedSingleton("Nats", (sp, _) => new NatsConnection(NatsOpts.Default with
@@ -58,9 +100,13 @@ builder.Services
 	.AddMessageQueue()
 	.AddNatsMessageQueue(config => config
 	.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
+	.AddHandler<TriggerGameWagerMessageHandler>(NatsConst.GameWagerSettleFirstDataPublish, typeof(TriggerGameWagerMessageHandler).FullName!.ToLower())
+	.AddHandler<TriggerDepositMessageHandler>("tgs.payment.deposit.status_ex", typeof(TriggerDepositMessageHandler).FullName!.ToLower())
+	.AddHandler<TriggerMessageHandler>(VipLevelsLevelNatsConst.Trigger, VipLevelsLevelNatsConst.Trigger)
 	.AddHandler<LevelCheckMessageHandler>(VipLevelsLevelNatsConst.Check, VipLevelsLevelNatsConst.Check)
 	.AddHandler<LevelUpgradeMessageHandler>(VipLevelsLevelNatsConst.Upgrade, VipLevelsLevelNatsConst.Upgrade))
 	.ClearAllExchanges()
+	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.Trigger)
 	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.Check)
 	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.Upgrade);
 
@@ -102,9 +148,22 @@ var app = builder.Build();
 _ = app.UseSwagger();
 _ = app.UseSwaggerUI();
 
+app.UseHangfireDashboard(
+	"/hangfire",
+	new DashboardOptions()
+	{
+		Authorization =
+		new[]
+		{
+			new IgnoreHangfireAuthorizationFilter()
+		}
+	});
+
 _ = app.MapControllers();
 _ = app.MapSwagger();
 
 app.UseHealthChecks("/healthz");
+
+_ = app.UseHangfireRegisterAsync();
 
 app.Run();

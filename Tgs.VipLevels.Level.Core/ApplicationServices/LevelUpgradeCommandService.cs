@@ -47,14 +47,8 @@ internal class LevelUpgradeCommandService(
 			return;
 		}
 
-		(decimal CurrentDeposit, decimal CurrentTurnover) = await utensils.GetCurrentExpAsync(
-			accumDepositId: playerVipLevelInfo.AccumDepositId,
-			accumTurnoverId: playerVipLevelInfo.AccumTurnoverId,
-			cancellationToken: cancellationToken)
-			.ConfigureAwait(false);
-
-		if (Current.LevelUpAccumulateDeposit <= CurrentDeposit &&
-			Current.LevelUpAccumulateBetAmount <= CurrentTurnover)
+		if (Current.LevelUpAccumulateDeposit <= playerVipLevelInfo.AccumDeposit &&
+			Current.LevelUpAccumulateBetAmount <= playerVipLevelInfo.AccumTurnover)
 		{
 			await client.PlayerVipLevelSystemAsync(
 				playerCode: playerVipLevelInfo.PlayerCode,

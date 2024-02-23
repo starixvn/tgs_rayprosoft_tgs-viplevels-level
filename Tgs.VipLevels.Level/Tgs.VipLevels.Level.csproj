@@ -8,6 +8,11 @@
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<NoWarn>$(NoWarn);1591;0063</NoWarn>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="FluentdForward.OpenTelemetry.MessagePack" Version="0.3.7" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
@@ -28,6 +33,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Tgs.VipLevels.Level.Common\Tgs.VipLevels.Level.Common.csproj" />
 		<ProjectReference Include="..\Tgs.VipLevels.Level.Core\Tgs.VipLevels.Level.Core.csproj" />
+		<ProjectReference Include="..\Tgs.VipLevels.Level.Repositories\Tgs.VipLevels.Level.Repositories.csproj" />
 	</ItemGroup>
 
 </Project>
