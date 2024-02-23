@@ -131,7 +131,7 @@ spec:
       volumes:
         - name: appsettings
           configMap:
-            name: configmap-{{ include "game-gamewagers-expire.fullname" . }}
+            name: configmap-{{ include "viplevels-level.fullname" . }}
         - name: rds-combined-ca-bundle
           secret:
             secretName: rds-combined-ca-bundle
