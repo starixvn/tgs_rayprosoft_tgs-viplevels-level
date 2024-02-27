@@ -18,6 +18,6 @@ message VipLevelsLevelMessage {
 }
 
 message VipLevelsLevelTriggerMessage {
-    // 玩家代碼
+    // 觸發時間
     google.protobuf.Timestamp trigger_at = 1;
 }
