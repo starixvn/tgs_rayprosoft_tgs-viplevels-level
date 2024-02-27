@@ -134,10 +134,12 @@ internal class PlayerVipLevelBacklogRepository(
 		CancellationToken cancellationToken = default)
 	{
 		var index = Builders<PlayerVipLevelBacklog>.IndexKeys
-			.Ascending(m => m.PlayerCode);
+			.Ascending(m => m.PlayerCode)
+			.Ascending(m => m.TriggerAt);
 
 		var createIndexOptions = new CreateIndexOptions
 		{
+			Unique = true,
 			Name = "px_player_vip_level_backlogs"
 		};
 		var createIndexModel = new CreateIndexModel<PlayerVipLevelBacklog>(index, createIndexOptions);
