@@ -140,7 +140,7 @@ internal class PlayerVipLevelBacklogRepository(
 		var createIndexOptions = new CreateIndexOptions
 		{
 			Unique = true,
-			Name = "px_player_vip_level_backlogs"
+			Name = "px_index"
 		};
 		var createIndexModel = new CreateIndexModel<PlayerVipLevelBacklog>(index, createIndexOptions);
 
