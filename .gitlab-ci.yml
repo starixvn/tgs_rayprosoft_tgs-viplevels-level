@@ -107,6 +107,6 @@ deploy-prod:
     - |
       cat << EOF | deploy_k8s default $HelmTemplateFolderName $namespace
         {
-           "replicaCount": 2
+           "replicaCount": 1
         }
       EOF
