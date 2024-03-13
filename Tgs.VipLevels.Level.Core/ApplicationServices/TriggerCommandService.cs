@@ -46,7 +46,7 @@ internal class TriggerCommandService(
 					cancellationToken: cancellationToken)
 					.ConfigureAwait(false);
 
-				await repository.UpdateExpireOnAsync(
+				await repository.DeleteAsync(
 					playerCode: info.PlayerCode,
 					triggerAt: info.TriggerAt,
 					cancellationToken: cancellationToken)

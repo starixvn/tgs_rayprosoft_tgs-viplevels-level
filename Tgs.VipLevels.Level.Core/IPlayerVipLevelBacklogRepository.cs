@@ -8,5 +8,7 @@ public interface IPlayerVipLevelBacklogRepository
 
 	IAsyncEnumerable<PlayerVipLevelBacklogInfo> QueryAsync(DateTimeOffset endOn, int offset = 0, int limit = 20, CancellationToken cancellationToken = default);
 
+	ValueTask DeleteAsync(string playerCode, DateTimeOffset triggerAt, CancellationToken cancellationToken = default);
+
 	ValueTask UpdateExpireOnAsync(string playerCode, DateTimeOffset triggerAt, CancellationToken cancellationToken = default);
 }

@@ -128,9 +128,7 @@ internal class PlayerVipLevelBacklogRepository(
 			.ConfigureAwait(false);
 	}
 
-	private static Task PlayerVipLevelBacklog_IndexAsync(
-		IMongoCollection<PlayerVipLevelBacklog> collection,
-		CancellationToken cancellationToken = default)
+	private static Task PlayerVipLevelBacklog_IndexAsync(IMongoCollection<PlayerVipLevelBacklog> collection, CancellationToken cancellationToken = default)
 	{
 		var index = Builders<PlayerVipLevelBacklog>.IndexKeys
 			.Ascending(m => m.PlayerCode)
@@ -148,9 +146,7 @@ internal class PlayerVipLevelBacklogRepository(
 			cancellationToken: cancellationToken);
 	}
 
-	private static Task ExpireOn_IndexAsync(
-		IMongoCollection<PlayerVipLevelBacklog> collection,
-		CancellationToken cancellationToken = default)
+	private static Task ExpireOn_IndexAsync(IMongoCollection<PlayerVipLevelBacklog> collection, CancellationToken cancellationToken = default)
 	{
 		var index = Builders<PlayerVipLevelBacklog>.IndexKeys
 			.Ascending(m => m.ExpireAt);
@@ -192,5 +188,31 @@ internal class PlayerVipLevelBacklogRepository(
 			.ConfigureAwait(false);
 
 		return collection;
+	}
+
+	public async ValueTask DeleteAsync(string playerCode, DateTimeOffset triggerAt, CancellationToken cancellationToken = default)
+	{
+		var collection = await GetCollectionAsync(cancellationToken).ConfigureAwait(false);
+
+		var filter = Builders<PlayerVipLevelBacklog>.Filter.Eq(x => x.PlayerCode, playerCode)
+			& Builders<PlayerVipLevelBacklog>.Filter.Eq(x => x.TriggerAt, triggerAt.UtcDateTime);
+
+		var retryPolicy = Policy
+		   .Handle<MongoBulkWriteException>()
+		   .WaitAndRetryAsync(
+			retryCount: 3,
+			retryAttempt => TimeSpan.FromSeconds(5),
+			(result, retryTime, context) => logger.LogWarning("LogOn:{logOn}  PlayerCode:{playerCode} TriggerAt:{triggerAt} Result:{result} Delay:{retryTime}",
+				DateTime.Now.ToString("o"),
+				playerCode,
+				triggerAt,
+				result,
+				retryTime));
+
+		_ = await retryPolicy.ExecuteAsync(
+			() => collection.DeleteOneAsync(
+				filter: filter,
+				cancellationToken: cancellationToken))
+			.ConfigureAwait(false);
 	}
 }
