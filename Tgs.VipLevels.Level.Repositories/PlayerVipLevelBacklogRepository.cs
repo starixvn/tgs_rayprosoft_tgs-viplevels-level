@@ -66,7 +66,7 @@ internal class PlayerVipLevelBacklogRepository(
 		var options = new FindOptions<PlayerVipLevelBacklog>
 		{
 			Sort = sort,
-			Skip = offset,
+			Skip = offset* limit,
 			Limit = limit,
 		};
 
