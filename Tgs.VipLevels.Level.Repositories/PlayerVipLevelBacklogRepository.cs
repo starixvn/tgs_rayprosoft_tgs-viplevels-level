@@ -104,7 +104,7 @@ internal class PlayerVipLevelBacklogRepository(
 
 		var options = new UpdateOptions
 		{
-			IsUpsert = false
+			IsUpsert = true
 		};
 
 		var retryPolicy = Policy
