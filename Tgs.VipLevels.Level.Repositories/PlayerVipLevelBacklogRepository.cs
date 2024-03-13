@@ -99,7 +99,6 @@ internal class PlayerVipLevelBacklogRepository(
 
 		var update = Builders<PlayerVipLevelBacklog>.Update
 			.Set(s => s.PlayerCode, playerCode)
-			.Set(s => s.TriggerAt, triggerAt.UtcDateTime.AddMinutes(5))
 			.Set(s => s.ExpireAt, DateTime.UtcNow.AddSeconds(1))
 			.Inc(s => s.Count, 1);
 
