@@ -130,7 +130,7 @@ internal class LevelUpgradeChannel(
 			if (reader.TryRead(out var command))
 			{
 				using var activity = _ActivitySource.StartActivity(
-					"ExpChannel handle exchange",
+					"LevelUpgradeChannel handle exchange",
 					 ActivityKind.Internal,
 					parentContext: default);
 				try
