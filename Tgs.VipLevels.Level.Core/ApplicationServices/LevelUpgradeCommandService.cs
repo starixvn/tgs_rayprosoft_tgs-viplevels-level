@@ -47,8 +47,8 @@ internal class LevelUpgradeCommandService(
 			return;
 		}
 
-		if (Current.LevelUpAccumulateDeposit <= playerVipLevelInfo.AccumDeposit &&
-			Current.LevelUpAccumulateBetAmount <= playerVipLevelInfo.AccumTurnover)
+		if (Higher.LevelUpAccumulateDeposit <= playerVipLevelInfo.AccumDeposit &&
+			Higher.LevelUpAccumulateBetAmount <= playerVipLevelInfo.AccumTurnover)
 		{
 			await client.PlayerVipLevelSystemAsync(
 				playerCode: playerVipLevelInfo.PlayerCode,
