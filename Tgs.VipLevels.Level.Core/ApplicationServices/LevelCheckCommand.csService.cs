@@ -39,7 +39,7 @@ internal class UpgradeCheckCommandService(
 		}
 
 		if (playerVipLevelInfo.LevelUpAccumulateDeposit <= playerVipLevelInfo.AccumDeposit &&
-			playerVipLevelInfo.LevelUpAccumulateBetAmount <= playerVipLevelInfo.LevelUpAccumulateBetAmount)
+			playerVipLevelInfo.LevelUpAccumulateBetAmount <= playerVipLevelInfo.AccumTurnover)
 		{
 			var message = new VipLevelsLevelMessage
 			{
