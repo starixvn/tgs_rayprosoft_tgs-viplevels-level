@@ -8,13 +8,8 @@ internal class VipLevelUtensils(
 {
 	public async ValueTask<(VipLevelInfoViewModel Current, VipLevelInfoViewModel Higher, VipLevelInfoViewModel Lower)> GetConditionsAsync(Guid brandId, int level, CancellationToken cancellationToken = default)
 	{
-		var snapshotId = await vipLevelServiceClient.VipLevelSnapshotCurrentSnapshotIdAsync(
+		var vipLevelInfos = await vipLevelServiceClient.VipLevelQueryAsync(
 			brandId: brandId,
-			cancellationToken: cancellationToken)
-			.ConfigureAwait(false);
-
-		var vipLevelInfos = await vipLevelServiceClient.VipLevelSnapshotQueryVipLevelAsync(
-			id: snapshotId,
 			cancellationToken: cancellationToken)
 			.ToArrayAsync(
 			cancellationToken: cancellationToken)
@@ -30,18 +25,5 @@ internal class VipLevelUtensils(
 		lower = vipLevelInfos.Where(predicate: vl => vl.Level < level).LastOrDefault() ?? lower;
 
 		return new(current, highest, lower);
-	}
-
-	public async ValueTask<VipLevelInfoViewModel> GetVipLevelInfoAsync(Guid snapshotId, int level, CancellationToken cancellationToken = default)
-	{
-		var vipLevelInfos = await vipLevelServiceClient.VipLevelSnapshotQueryVipLevelAsync(
-			id: snapshotId,
-			cancellationToken: cancellationToken)
-			.ToArrayAsync(
-			cancellationToken: cancellationToken)
-			.ConfigureAwait(false)
-			?? Enumerable.Empty<VipLevelInfoViewModel>();
-
-		return vipLevelInfos.FirstOrDefault(predicate: vl => vl.Level == level) ?? throw new NullReferenceException();
 	}
 }
