@@ -15,12 +15,6 @@ public class VipLevelUtensilsUnitTest
 
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
 
-		var snapshotId = Guid.NewGuid();
-		_ = fakeVipLevelServiceClient.VipLevelSnapshotCurrentSnapshotIdAsync(
-			brandId: Arg.Is(brandId),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns(snapshotId);
-
 		var vipLevelInfos = new VipLevelInfoViewModel[] {
 			new(
 				Id: Guid.NewGuid(),
@@ -83,8 +77,8 @@ public class VipLevelUtensilsUnitTest
 				WithdrawTransactionsPerDay: -1,
 				WithdrawTotalAmountPerDay: -1),
 		};
-		fakeVipLevelServiceClient.VipLevelSnapshotQueryVipLevelAsync(
-			id: Arg.Is(snapshotId),
+		_ = fakeVipLevelServiceClient.VipLevelQueryAsync(
+			brandId: Arg.Is(brandId),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns(vipLevelInfos.ToAsyncEnumerable());
 
@@ -106,12 +100,6 @@ public class VipLevelUtensilsUnitTest
 
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
 
-		var snapshotId = Guid.NewGuid();
-		_ = fakeVipLevelServiceClient.VipLevelSnapshotCurrentSnapshotIdAsync(
-			brandId: Arg.Is(brandId),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns(snapshotId);
-
 		var vipLevelInfos = new VipLevelInfoViewModel[] {
 			new(
 				Id: Guid.NewGuid(),
@@ -174,8 +162,8 @@ public class VipLevelUtensilsUnitTest
 				WithdrawTransactionsPerDay: -1,
 				WithdrawTotalAmountPerDay: -1),
 		};
-		fakeVipLevelServiceClient.VipLevelSnapshotQueryVipLevelAsync(
-			id: Arg.Is(snapshotId),
+		fakeVipLevelServiceClient.VipLevelQueryAsync(
+			brandId: Arg.Is(brandId),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns(vipLevelInfos.ToAsyncEnumerable());
 
@@ -197,12 +185,6 @@ public class VipLevelUtensilsUnitTest
 
 		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
 
-		var snapshotId = Guid.NewGuid();
-		_ = fakeVipLevelServiceClient.VipLevelSnapshotCurrentSnapshotIdAsync(
-			brandId: Arg.Is(brandId),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns(snapshotId);
-
 		var vipLevelInfos = new VipLevelInfoViewModel[] {
 			new(
 				Id: Guid.NewGuid(),
@@ -265,8 +247,8 @@ public class VipLevelUtensilsUnitTest
 				WithdrawTransactionsPerDay: -1,
 				WithdrawTotalAmountPerDay: -1),
 		};
-		fakeVipLevelServiceClient.VipLevelSnapshotQueryVipLevelAsync(
-			id: Arg.Is(snapshotId),
+		fakeVipLevelServiceClient.VipLevelQueryAsync(
+			brandId: Arg.Is(brandId),
 			cancellationToken: Arg.Any<CancellationToken>())
 			.Returns(vipLevelInfos.ToAsyncEnumerable());
 
@@ -278,88 +260,5 @@ public class VipLevelUtensilsUnitTest
 		vipLevelInfos.ElementAt(2).ToExpectedObject().ShouldEqual(Current);
 		vipLevelInfos.ElementAt(2).ToExpectedObject().ShouldEqual(Higher);
 		vipLevelInfos.ElementAt(1).ToExpectedObject().ShouldEqual(Lower);
-	}
-
-	[Fact]
-	public async void GetVipLevelInfo_Normal_Process()
-	{
-		Guid snapshotId = Guid.NewGuid();
-		int level = 2;
-
-		var fakeVipLevelServiceClient = Substitute.For<IVipLevelServiceClient>();
-
-		var vipLevelInfos = new VipLevelInfoViewModel[] {
-			new(
-				Id: Guid.NewGuid(),
-				Level: 1,
-				BrandId: Guid.NewGuid(),
-				LevelUpAccumulateBetAmount: 0,
-				LevelUpAccumulateDeposit: 0,
-				LevelKeepAccumulateBetAmount: 0,
-				LevelKeepAccumulateDeposit: 0,
-				LevelKeepCondition: true,
-				BirthBenefit: 99.0m,
-				PromotionBenefit: 88.0m,
-				QuarterlyBenefit: 66.0m,
-				LiveDealerRebate: 0.0m,
-				SlotRebate: 0.0m,
-				LotteryRebate: 0.0m,
-				CardGameRebate: 0.0m,
-				SportsRebate: 0.0m,
-				VirtualSportsRebate: 0.0m,
-				WithdrawTransactionsPerDay: -1,
-				WithdrawTotalAmountPerDay: -1),
-			new(
-				Id: Guid.NewGuid(),
-				Level: 2,
-				BrandId: Guid.NewGuid(),
-				LevelUpAccumulateBetAmount: 0,
-				LevelUpAccumulateDeposit: 0,
-				LevelKeepAccumulateBetAmount: 0,
-				LevelKeepAccumulateDeposit: 0,
-				LevelKeepCondition: true,
-				BirthBenefit: 199.0m,
-				PromotionBenefit: 188.0m,
-				QuarterlyBenefit: 166.0m,
-				LiveDealerRebate: 0.0m,
-				SlotRebate: 0.0m,
-				LotteryRebate: 0.0m,
-				CardGameRebate: 0.0m,
-				SportsRebate: 0.0m,
-				VirtualSportsRebate: 0.0m,
-				WithdrawTransactionsPerDay: -1,
-				WithdrawTotalAmountPerDay: -1),
-			new(
-				Id: Guid.NewGuid(),
-				Level: 3,
-				BrandId: Guid.NewGuid(),
-				LevelUpAccumulateBetAmount: 0,
-				LevelUpAccumulateDeposit: 0,
-				LevelKeepAccumulateBetAmount: 0,
-				LevelKeepAccumulateDeposit: 0,
-				LevelKeepCondition: true,
-				BirthBenefit: 299.0m,
-				PromotionBenefit: 288.0m,
-				QuarterlyBenefit: 266.0m,
-				LiveDealerRebate: 0.0m,
-				SlotRebate: 0.0m,
-				LotteryRebate: 0.0m,
-				CardGameRebate: 0.0m,
-				SportsRebate: 0.0m,
-				VirtualSportsRebate: 0.0m,
-				WithdrawTransactionsPerDay: -1,
-				WithdrawTotalAmountPerDay: -1),
-		};
-		fakeVipLevelServiceClient.VipLevelSnapshotQueryVipLevelAsync(
-			id: Arg.Is(snapshotId),
-			cancellationToken: Arg.Any<CancellationToken>())
-			.Returns(vipLevelInfos.ToAsyncEnumerable());
-
-		var sut = new VipLevelUtensils(
-			fakeVipLevelServiceClient);
-
-		var actual = await sut.GetVipLevelInfoAsync(snapshotId, level);
-
-		vipLevelInfos.ElementAt(1).ToExpectedObject().ShouldEqual(actual);
 	}
 }
