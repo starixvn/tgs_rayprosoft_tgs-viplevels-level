@@ -1,4 +1,4 @@
-﻿using Tgs.GameWagers.Stat.Worker.Common.Protos;
+﻿using Tgs.GameBets.Worker.Common.Protos;
 using Tgs.ServiceUtility;
 using Tgs.VipLevels.Level.Core.ApplicationServices;
 
@@ -8,9 +8,9 @@ namespace Tgs.VipLevels.Level.Messages;
 
 public class TriggerGameWagerMessageHandler(
 	ILogger<TriggerGameWagerMessageHandler> logger,
-	ICommandService<TriggerGameWagerCommand> service) : IMessageHandler<GameWagersFirstsMessage>
+	ICommandService<TriggerGameWagerCommand> service) : IMessageHandler<GameBetsWorkerStatMessage>
 {
-	public ValueTask HandleAsync(string subject, GameWagersFirstsMessage data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
+	public ValueTask HandleAsync(string subject, GameBetsWorkerStatMessage data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
 	{
 		logger.LogInformation("LogOn:{logOn} Subject:{subject} Mesaage:This message has been received.({data})",
 			DateTime.Now.ToString("o"),
