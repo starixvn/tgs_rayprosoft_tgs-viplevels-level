@@ -15,7 +15,17 @@ public class GameBetsFirstWorkerVipLevelWorkerMessageHandler(
 		logger.LogInformation("LogOn:{logOn} Subject:{subject} Mesaage:This message has been received.({data})",
 			DateTime.Now.ToString("o"),
 			subject,
-			data);
+			new
+			{
+				GameProviderId = data.GameProviderId.ToGuid(),
+				data.GameId,
+				data.PlayerCode,
+				WalletId = data.WalletId.ToGuid(),
+				data.ExternalRoundId,
+				data.ExternalBetId,
+				ExternalCreatedOn = data.ExternalCreatedOn.ToDateTimeOffset(),
+				ClosedOn = data.ClosedOn.ToDateTimeOffset()
+			});
 
 		return service.ExecuteAsync(
 			command: new TriggerGameWagerCommand(
