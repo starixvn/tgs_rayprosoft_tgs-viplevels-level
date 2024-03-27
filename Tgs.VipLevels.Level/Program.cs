@@ -9,7 +9,6 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Tgs.GameBets.First.Worker.Common;
-using Tgs.GameBets.Worker.Common;
 using Tgs.MessageQueue.Nats.Serializers;
 using Tgs.VipLevels.Level;
 using Tgs.VipLevels.Level.Common;
@@ -101,7 +100,6 @@ builder.Services
 	.AddMessageQueue()
 	.AddNatsMessageQueue(config => config
 	.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
-	.AddHandler<TriggerGameWagerMessageHandler>(GameBetsWorkerNatsConst.GameBetsWorkerStat, typeof(TriggerGameWagerMessageHandler).FullName!.ToLower())
 	.AddHandler<GameBetsFirstWorkerVipLevelWorkerMessageHandler>(GameBetsFirstWorkerNatsConst.GameBetsFirstWorkerVipLevelWorker, typeof(GameBetsFirstWorkerVipLevelWorkerMessageHandler).FullName!.ToLower())
 	.AddHandler<TriggerDepositMessageHandler>("tgs.payment.deposit.status_ex", typeof(TriggerDepositMessageHandler).FullName!.ToLower())
 	.AddHandler<TriggerMessageHandler>(VipLevelsLevelNatsConst.Trigger, VipLevelsLevelNatsConst.Trigger)
