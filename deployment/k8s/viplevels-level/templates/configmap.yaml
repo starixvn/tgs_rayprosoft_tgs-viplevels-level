@@ -10,12 +10,14 @@ data:
     {
       "Logging": {
         "LogLevel": {
-          "Default": "Information"
+          "Default": "Information",
+          "Tgs.VipLevels.Level.Messages": "Information"
         }
       },
       "VipLevelsLevelConnectionStrings": {
-        "VipLevelServiceClientBaseUrl": "http://tgs-viplevel",
-        "PaymentServiceClientBaseUrl": "http://payment-api"
+        "VipLevelServiceClientBaseUrl": "http://tgs-viplevel/",
+        "PaymentServiceClientBaseUrl": "http://payment-api/",
+         "GameBetClientBaseUrl": "http://game-gamebets/"
       }
     }
   otel-collector-config.yaml: |

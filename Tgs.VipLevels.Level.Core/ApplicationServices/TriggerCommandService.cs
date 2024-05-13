@@ -38,7 +38,7 @@ internal class TriggerCommandService(
 			foreach (var info in infos)
 			{
 				await messageSender.PublishAsync(
-					VipLevelsLevelNatsConst.Check,
+					VipLevelsLevelNatsConst.VipLevelsLevelCheck,
 					data: new VipLevelsLevelMessage
 					{
 						PlayerCode = info.PlayerCode

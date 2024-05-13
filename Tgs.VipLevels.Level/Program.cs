@@ -8,7 +8,6 @@ using OpenTelemetry.Metrics;
 
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Tgs.GameBets.First.Worker.Common;
 using Tgs.MessageQueue.Nats.Serializers;
 using Tgs.VipLevels.Level;
 using Tgs.VipLevels.Level.Common;
@@ -89,6 +88,12 @@ builder.Services.AddVipLevelsLevel(
 		{
 			var configuration = sp.GetRequiredService<IConfiguration>();
 			http.BaseAddress = configuration.GetValue<Uri>("VipLevelsLevelConnectionStrings:PaymentServiceClientBaseUrl")!;
+		}))
+	.AddGameBetsClient((httpClientBuilder) =>
+		httpClientBuilder.ConfigureHttpClient((sp, http) =>
+		{
+			var configuration = sp.GetRequiredService<IConfiguration>();
+			http.BaseAddress = configuration.GetValue<Uri>("VipLevelsLevelConnectionStrings:GameBetClientBaseUrl")!;
 		}));
 
 builder.Services
@@ -100,16 +105,15 @@ builder.Services
 	.AddMessageQueue()
 	.AddNatsMessageQueue(config => config
 	.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
-	.AddHandler<GameBetsFirstWorkerVipLevelWorkerMessageHandler>(GameBetsFirstWorkerNatsConst.GameBetsFirstWorkerVipLevelWorker, typeof(GameBetsFirstWorkerVipLevelWorkerMessageHandler).FullName!.ToLower())
-	.AddHandler<TriggerDepositMessageHandler>("tgs.payment.deposit.status_ex", typeof(TriggerDepositMessageHandler).FullName!.ToLower())
-	.AddHandler<TriggerMessageHandler>(VipLevelsLevelNatsConst.Trigger, VipLevelsLevelNatsConst.Trigger)
-	.AddHandler<LevelCheckMessageHandler>(VipLevelsLevelNatsConst.Check, VipLevelsLevelNatsConst.Check)
-	.AddHandler<LevelUpgradeMessageHandler>(VipLevelsLevelNatsConst.Upgrade, VipLevelsLevelNatsConst.Upgrade))
+	.AddHandler<GameBetMessageHandler>(Tgs.GameBets.Common.GameBetsNatsConst.GameBetAddPublish, typeof(GameBetMessageHandler).FullName!.ToLower())
+	.AddHandler<DepositFormMessageHandler>("tgs.payment.deposit.status_ex", typeof(DepositFormMessageHandler).FullName!.ToLower())
+	.AddHandler<LevelTriggerMessageHandler>(VipLevelsLevelNatsConst.VipLevelsLevelTrigger, VipLevelsLevelNatsConst.VipLevelsLevelTrigger)
+	.AddHandler<LevelCheckMessageHandler>(VipLevelsLevelNatsConst.VipLevelsLevelCheck, VipLevelsLevelNatsConst.VipLevelsLevelCheck)
+	.AddHandler<LevelUpgradeMessageHandler>(VipLevelsLevelNatsConst.VipLevelsLevelUpgrade, VipLevelsLevelNatsConst.VipLevelsLevelUpgrade))
 	.ClearAllExchanges()
-	.AddNatsGlobPatternExchange(GameBetsFirstWorkerNatsConst.GameBetsFirstWorkerVipLevelWorker)
-	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.Trigger)
-	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.Check)
-	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.Upgrade);
+	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.VipLevelsLevelTrigger)
+	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.VipLevelsLevelCheck)
+	.AddNatsGlobPatternExchange(VipLevelsLevelNatsConst.VipLevelsLevelUpgrade);
 
 builder.Services
 	.AddOpenTelemetry()

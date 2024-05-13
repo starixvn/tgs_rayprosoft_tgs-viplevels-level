@@ -85,14 +85,14 @@ internal class LevelUpgradeCommandService(
 			};
 
 			await messageSender.PublishAsync(
-				subject: VipLevelsLevelNatsConst.Check,
+				subject: VipLevelsLevelNatsConst.VipLevelsLevelCheck,
 				data: message,
 				cancellationToken: cancellationToken)
 				.ConfigureAwait(false);
 
 			logger.LogInformation("LogOn:{logOn} Subject:{subject} Message:This message has been published.({message})",
 				DateTime.Now.ToString("u"),
-				VipLevelsLevelNatsConst.Check,
+				VipLevelsLevelNatsConst.VipLevelsLevelCheck,
 				message);
 		}
 	}

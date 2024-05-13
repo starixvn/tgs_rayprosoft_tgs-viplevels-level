@@ -26,7 +26,7 @@ public class CheckController : ControllerBase
 		};
 
 		return messageSender.PublishAsync(
-			VipLevelsLevelNatsConst.Check,
+			VipLevelsLevelNatsConst.VipLevelsLevelCheck,
 			data: publish,
 			cancellationToken: HttpContext.RequestAborted);
 	}

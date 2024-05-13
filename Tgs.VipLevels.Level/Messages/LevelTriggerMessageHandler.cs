@@ -5,8 +5,8 @@ using Valhalla.MessageQueue;
 
 namespace Tgs.VipLevels.Level.Messages;
 
-internal class TriggerMessageHandler(
-	ILogger<TriggerMessageHandler> logger,
+internal class LevelTriggerMessageHandler(
+	ILogger<LevelTriggerMessageHandler> logger,
 	ICommandService<TriggerCommand> service) : IMessageHandler<VipLevelsLevelTriggerMessage>
 {
 	public ValueTask HandleAsync(string subject, VipLevelsLevelTriggerMessage data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
