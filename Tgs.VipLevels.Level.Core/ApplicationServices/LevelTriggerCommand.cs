@@ -1,3 +1,3 @@
 ﻿namespace Tgs.VipLevels.Level.Core.ApplicationServices;
-public record TriggerCommand(
+public record LevelTriggerCommand(
 	DateTimeOffset TriggerAt);

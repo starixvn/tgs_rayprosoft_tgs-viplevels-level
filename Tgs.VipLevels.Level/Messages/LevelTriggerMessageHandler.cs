@@ -7,7 +7,7 @@ namespace Tgs.VipLevels.Level.Messages;
 
 internal class LevelTriggerMessageHandler(
 	ILogger<LevelTriggerMessageHandler> logger,
-	ICommandService<TriggerCommand> service) : IMessageHandler<VipLevelsLevelTriggerMessage>
+	ICommandService<LevelTriggerCommand> service) : IMessageHandler<VipLevelsLevelTriggerMessage>
 {
 	public ValueTask HandleAsync(string subject, VipLevelsLevelTriggerMessage data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
 	{
@@ -17,7 +17,7 @@ internal class LevelTriggerMessageHandler(
 			data);
 
 		return service.ExecuteAsync(
-			command: new TriggerCommand(
+			command: new LevelTriggerCommand(
 				TriggerAt: data.TriggerAt.ToDateTimeOffset()),
 			cancellationToken: cancellationToken);
 	}

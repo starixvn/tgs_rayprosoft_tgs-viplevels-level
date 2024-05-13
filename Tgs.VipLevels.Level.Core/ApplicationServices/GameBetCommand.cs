@@ -1,2 +1,2 @@
 ﻿namespace Tgs.VipLevels.Level.Core.ApplicationServices;
-public record TriggerGameWagerCommand(string PlayerCode);
+public record GameBetCommand(string PlayerCode);

@@ -2,7 +2,7 @@
 
 namespace Tgs.VipLevels.Level.Core.ApplicationServices;
 
-public record TriggerDepositFormCommand(
+public record DepositFormCommand(
 	Guid FormId,
 	Guid BrandId,
 	PaymentFlowState Status);

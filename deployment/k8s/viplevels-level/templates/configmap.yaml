@@ -10,8 +10,10 @@ data:
     {
       "Logging": {
         "LogLevel": {
-          "Default": "Information",
-          "Tgs.VipLevels.Level.Messages": "Information"
+          "Default": "Warning",
+          "Tgs.VipLevels.Level.Messages.DepositFormMessageHandler": "Information",
+          "Tgs.VipLevels.Level.Messages.GameBetMessageHandler": "Information",
+          "Tgs.VipLevels.Level.Core.ApplicationServices.LevelUpgradeCommandService": "Information"
         }
       },
       "VipLevelsLevelConnectionStrings": {

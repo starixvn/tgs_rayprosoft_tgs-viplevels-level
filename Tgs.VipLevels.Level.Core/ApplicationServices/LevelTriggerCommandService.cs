@@ -8,12 +8,12 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Tgs.VipLevels.Level.Core.ApplicationServices;
 
-internal class TriggerCommandService(
-	ILogger<TriggerCommandService> logger,
+internal class LevelTriggerCommandService(
+	ILogger<LevelTriggerCommandService> logger,
 	IPlayerVipLevelBacklogRepository repository,
-	IMessageSender messageSender) : ICommandService<TriggerCommand>
+	IMessageSender messageSender) : ICommandService<LevelTriggerCommand>
 {
-	public async ValueTask ExecuteAsync(TriggerCommand command, CancellationToken cancellationToken = default)
+	public async ValueTask ExecuteAsync(LevelTriggerCommand command, CancellationToken cancellationToken = default)
 	{
 		IEnumerable<PlayerVipLevelBacklogInfo>? infos;
 		var offset = 0;
