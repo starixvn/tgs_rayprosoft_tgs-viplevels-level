@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Tgs.VipLevels.Level.Core.UnitTest;
+
 public class TriggerTimeUtnsilUnitTest
 {
 	[Fact]
@@ -18,6 +19,7 @@ public class TriggerTimeUtnsilUnitTest
 
 		Assert.Equal(new DateTimeOffset(2024, 02, 22, 11, 51, 00, TimeSpan.FromHours(+8)), actual);
 	}
+
 	[Fact]
 	public void DateTimeOffset_24_02_22_11_50_59_08()
 	{

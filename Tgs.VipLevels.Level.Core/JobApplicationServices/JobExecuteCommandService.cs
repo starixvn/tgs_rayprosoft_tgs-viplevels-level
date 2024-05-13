@@ -26,7 +26,7 @@ internal class JobExecuteCommandService(
 		logger.LogInformation("LogOn:{logOn} Publish Message:{message}", DateTime.Now.ToString("u"), message);
 
 		return messageSender.PublishAsync<VipLevelsLevelTriggerMessage>(
-			subject: VipLevelsLevelNatsConst.Trigger,
+			subject: VipLevelsLevelNatsConst.VipLevelsLevelTrigger,
 			data: message,
 			cancellationToken: cancellationToken);
 	}

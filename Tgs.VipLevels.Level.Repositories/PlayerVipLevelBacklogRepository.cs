@@ -66,7 +66,7 @@ internal class PlayerVipLevelBacklogRepository(
 		var options = new FindOptions<PlayerVipLevelBacklog>
 		{
 			Sort = sort,
-			Skip = offset* limit,
+			Skip = offset * limit,
 			Limit = limit,
 		};
 
@@ -124,6 +124,32 @@ internal class PlayerVipLevelBacklogRepository(
 				filter: filter,
 				update: update,
 				options: options,
+				cancellationToken: cancellationToken))
+			.ConfigureAwait(false);
+	}
+
+	public async ValueTask DeleteAsync(string playerCode, DateTimeOffset triggerAt, CancellationToken cancellationToken = default)
+	{
+		var collection = await GetCollectionAsync(cancellationToken).ConfigureAwait(false);
+
+		var filter = Builders<PlayerVipLevelBacklog>.Filter.Eq(x => x.PlayerCode, playerCode)
+			& Builders<PlayerVipLevelBacklog>.Filter.Eq(x => x.TriggerAt, triggerAt.UtcDateTime);
+
+		var retryPolicy = Policy
+		   .Handle<MongoBulkWriteException>()
+		   .WaitAndRetryAsync(
+			retryCount: 3,
+			retryAttempt => TimeSpan.FromSeconds(5),
+			(result, retryTime, context) => logger.LogWarning("LogOn:{logOn}  PlayerCode:{playerCode} TriggerAt:{triggerAt} Result:{result} Delay:{retryTime}",
+				DateTime.Now.ToString("o"),
+				playerCode,
+				triggerAt,
+				result,
+				retryTime));
+
+		_ = await retryPolicy.ExecuteAsync(
+			() => collection.DeleteOneAsync(
+				filter: filter,
 				cancellationToken: cancellationToken))
 			.ConfigureAwait(false);
 	}
@@ -188,31 +214,5 @@ internal class PlayerVipLevelBacklogRepository(
 			.ConfigureAwait(false);
 
 		return collection;
-	}
-
-	public async ValueTask DeleteAsync(string playerCode, DateTimeOffset triggerAt, CancellationToken cancellationToken = default)
-	{
-		var collection = await GetCollectionAsync(cancellationToken).ConfigureAwait(false);
-
-		var filter = Builders<PlayerVipLevelBacklog>.Filter.Eq(x => x.PlayerCode, playerCode)
-			& Builders<PlayerVipLevelBacklog>.Filter.Eq(x => x.TriggerAt, triggerAt.UtcDateTime);
-
-		var retryPolicy = Policy
-		   .Handle<MongoBulkWriteException>()
-		   .WaitAndRetryAsync(
-			retryCount: 3,
-			retryAttempt => TimeSpan.FromSeconds(5),
-			(result, retryTime, context) => logger.LogWarning("LogOn:{logOn}  PlayerCode:{playerCode} TriggerAt:{triggerAt} Result:{result} Delay:{retryTime}",
-				DateTime.Now.ToString("o"),
-				playerCode,
-				triggerAt,
-				result,
-				retryTime));
-
-		_ = await retryPolicy.ExecuteAsync(
-			() => collection.DeleteOneAsync(
-				filter: filter,
-				cancellationToken: cancellationToken))
-			.ConfigureAwait(false);
 	}
 }

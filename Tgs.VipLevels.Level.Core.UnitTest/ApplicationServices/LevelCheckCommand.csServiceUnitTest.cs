@@ -65,7 +65,7 @@ public class UpgradeCheckCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(1)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Upgrade),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelUpgrade),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode
@@ -126,7 +126,7 @@ public class UpgradeCheckCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Upgrade),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelUpgrade),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode
@@ -187,7 +187,7 @@ public class UpgradeCheckCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Upgrade),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelUpgrade),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode
@@ -247,7 +247,7 @@ public class UpgradeCheckCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Upgrade),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelUpgrade),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode
@@ -308,7 +308,7 @@ public class UpgradeCheckCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Upgrade),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelUpgrade),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode
@@ -369,7 +369,7 @@ public class UpgradeCheckCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Upgrade),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelUpgrade),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode

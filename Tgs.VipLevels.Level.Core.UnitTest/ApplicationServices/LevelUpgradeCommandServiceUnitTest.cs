@@ -153,7 +153,7 @@ public class LevelUpgradeCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(1)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Check),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelCheck),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode
@@ -300,7 +300,7 @@ public class LevelUpgradeCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Check),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelCheck),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode
@@ -379,7 +379,7 @@ public class LevelUpgradeCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Check),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelCheck),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode
@@ -526,7 +526,7 @@ public class LevelUpgradeCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Check),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelCheck),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode
@@ -673,7 +673,7 @@ public class LevelUpgradeCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Check),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelCheck),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode
@@ -820,7 +820,7 @@ public class LevelUpgradeCommandServiceUnitTest
 		_ = fakeMessageSender
 			.Received(0)
 			.PublishAsync(
-			subject: Arg.Is(VipLevelsLevelNatsConst.Check),
+			subject: Arg.Is(VipLevelsLevelNatsConst.VipLevelsLevelCheck),
 			data: Arg.Is(new VipLevelsLevelMessage
 			{
 				PlayerCode = playerVipLevelInfo.PlayerCode

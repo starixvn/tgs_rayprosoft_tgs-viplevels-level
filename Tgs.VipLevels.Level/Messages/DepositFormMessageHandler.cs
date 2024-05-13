@@ -7,8 +7,8 @@ using Valhalla.MessageQueue;
 
 namespace Tgs.VipLevels.Level.Messages;
 
-internal class TriggerDepositMessageHandler(
-	ILogger<TriggerDepositMessageHandler> logger,
+internal class DepositFormMessageHandler(
+	ILogger<DepositFormMessageHandler> logger,
 	ICommandService<TriggerDepositFormCommand> service) : IMessageHandler<FormEventEx>
 {
 	public ValueTask HandleAsync(string subject, FormEventEx data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
