@@ -7,7 +7,7 @@ namespace Tgs.VipLevels.Level.Messages;
 
 public class GameBetMessageHandler(
 	ILogger<GameBetMessageHandler> logger,
-	ICommandService<TriggerGameWagerCommand> service) : IMessageHandler<GameBets.Common.Protos.GameBetPublish>
+	ICommandService<GameBetCommand> service) : IMessageHandler<GameBets.Common.Protos.GameBetPublish>
 {
 	public ValueTask HandleAsync(string subject, GameBets.Common.Protos.GameBetPublish data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
 	{
@@ -31,7 +31,7 @@ public class GameBetMessageHandler(
 			});
 
 		return service.ExecuteAsync(
-			command: new TriggerGameWagerCommand(
+			command: new GameBetCommand(
 				PlayerCode: data.PlayerCode),
 			cancellationToken: cancellationToken);
 	}

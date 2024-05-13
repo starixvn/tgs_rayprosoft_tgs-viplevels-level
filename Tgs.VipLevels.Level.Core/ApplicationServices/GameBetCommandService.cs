@@ -3,13 +3,13 @@ using Tgs.ServiceUtility;
 
 namespace Tgs.VipLevels.Level.Core.ApplicationServices;
 
-internal class TriggerGameWagerCommandService(
-	ILogger<TriggerGameWagerCommandService> logger,
+internal class GameBetCommandService(
+	ILogger<GameBetCommandService> logger,
 	TimeProvider timeProvider,
 	ITriggerTimeUtnsil triggerTimeUtnsil,
-	IPlayerVipLevelBacklogRepository repository) : ICommandService<TriggerGameWagerCommand>
+	IPlayerVipLevelBacklogRepository repository) : ICommandService<GameBetCommand>
 {
-	public ValueTask ExecuteAsync(TriggerGameWagerCommand command, CancellationToken cancellationToken = default)
+	public ValueTask ExecuteAsync(GameBetCommand command, CancellationToken cancellationToken = default)
 	{
 		logger.LogInformation("LogOn:{logOn} Mesaage:This command information.({command})",
 			DateTime.Now.ToString("o"),

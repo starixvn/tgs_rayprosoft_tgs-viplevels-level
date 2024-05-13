@@ -50,7 +50,7 @@ internal class LevelUpgradeCommandService(
 		if (Higher.LevelUpAccumulateDeposit <= playerVipLevelInfo.AccumDeposit &&
 			Higher.LevelUpAccumulateBetAmount <= playerVipLevelInfo.AccumTurnover)
 		{
-			logger.LogWarning("LogOn:{logOn}  Message:This player triggers the upgrade condition.({info})",
+			logger.LogInformation("LogOn:{logOn}  Message:This player triggers the upgrade condition.({info})",
 				DateTime.Now.ToString("u"),
 				new
 				{

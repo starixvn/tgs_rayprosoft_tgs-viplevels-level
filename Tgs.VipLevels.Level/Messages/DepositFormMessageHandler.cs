@@ -9,7 +9,7 @@ namespace Tgs.VipLevels.Level.Messages;
 
 internal class DepositFormMessageHandler(
 	ILogger<DepositFormMessageHandler> logger,
-	ICommandService<TriggerDepositFormCommand> service) : IMessageHandler<FormEventEx>
+	ICommandService<DepositFormCommand> service) : IMessageHandler<FormEventEx>
 {
 	public ValueTask HandleAsync(string subject, FormEventEx data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
 	{
@@ -19,7 +19,7 @@ internal class DepositFormMessageHandler(
 			data);
 
 		return service.ExecuteAsync(
-			command: new TriggerDepositFormCommand(
+			command: new DepositFormCommand(
 				FormId: data.FormId,
 				BrandId: data.BrandId,
 				Status: (PaymentFlowState)Enum.Parse(typeof(PaymentFlowState), data.Status)),

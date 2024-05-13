@@ -7,14 +7,14 @@ using Tgs.VipLevels.Level.Core.ApplicationServices;
 
 namespace Tgs.VipLevels.Level.Core.ApplicationServices;
 
-internal class TriggerDepositFormCommandService(
-	ILogger<TriggerDepositFormCommandService> logger,
+internal class DepositFormCommandService(
+	ILogger<DepositFormCommandService> logger,
 	TimeProvider timeProvider,
 	ITriggerTimeUtnsil triggerTimeUtnsil,
 	IPaymentServiceClient client,
-	IPlayerVipLevelBacklogRepository repository) : ICommandService<TriggerDepositFormCommand>
+	IPlayerVipLevelBacklogRepository repository) : ICommandService<DepositFormCommand>
 {
-	public async ValueTask ExecuteAsync(TriggerDepositFormCommand command, CancellationToken cancellationToken = default)
+	public async ValueTask ExecuteAsync(DepositFormCommand command, CancellationToken cancellationToken = default)
 	{
 		logger.LogInformation("LogOn:{logOn} Mesaage:This command information.({command})",
 			DateTime.Now.ToString("o"),
