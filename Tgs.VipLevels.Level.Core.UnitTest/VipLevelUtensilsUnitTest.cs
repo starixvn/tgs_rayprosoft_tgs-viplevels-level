@@ -8,7 +8,7 @@ namespace Tgs.VipLevels.Level.Core.UnitTest;
 public class VipLevelUtensilsUnitTest
 {
 	[Fact]
-	public async void GetConditions_Normal_Process()
+	public async Task GetConditions_Normal_Process()
 	{
 		Guid brandId = Guid.NewGuid();
 		int level = 2;
@@ -93,7 +93,7 @@ public class VipLevelUtensilsUnitTest
 	}
 
 	[Fact]
-	public async void GetConditions_Normal_Process_Lower()
+	public async Task GetConditions_Normal_Process_Lower()
 	{
 		Guid brandId = Guid.NewGuid();
 		int level = 1;
@@ -178,7 +178,7 @@ public class VipLevelUtensilsUnitTest
 	}
 
 	[Fact]
-	public async void GetConditions_Normal_Process_Higher()
+	public async Task GetConditions_Normal_Process_Higher()
 	{
 		Guid brandId = Guid.NewGuid();
 		int level = 3;
