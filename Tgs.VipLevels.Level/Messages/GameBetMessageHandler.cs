@@ -7,9 +7,9 @@ namespace Tgs.VipLevels.Level.Messages;
 
 public class GameBetMessageHandler(
 	ILogger<GameBetMessageHandler> logger,
-	ICommandService<GameBetCommand> service) : IMessageHandler<GameBets.Common.Protos.GameBetPublish>
+	ICommandService<GameBetCommand> service) : IMessageHandler<GameBets.Worker.Common.Protos.GameBetsWorkerPublish>
 {
-	public ValueTask HandleAsync(string subject, GameBets.Common.Protos.GameBetPublish data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
+	public ValueTask HandleAsync(string subject, GameBets.Worker.Common.Protos.GameBetsWorkerPublish data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
 	{
 		logger.LogInformation("LogOn:{logOn} Subject:{subject} Mesaage:This message has been received.({data})",
 			DateTime.Now.ToString("o"),

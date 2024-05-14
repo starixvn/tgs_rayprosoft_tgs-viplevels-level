@@ -88,12 +88,6 @@ builder.Services.AddVipLevelsLevel(
 		{
 			var configuration = sp.GetRequiredService<IConfiguration>();
 			http.BaseAddress = configuration.GetValue<Uri>("VipLevelsLevelConnectionStrings:PaymentServiceClientBaseUrl")!;
-		}))
-	.AddGameBetsClient((httpClientBuilder) =>
-		httpClientBuilder.ConfigureHttpClient((sp, http) =>
-		{
-			var configuration = sp.GetRequiredService<IConfiguration>();
-			http.BaseAddress = configuration.GetValue<Uri>("VipLevelsLevelConnectionStrings:GameBetClientBaseUrl")!;
 		}));
 
 builder.Services
@@ -105,7 +99,7 @@ builder.Services
 	.AddMessageQueue()
 	.AddNatsMessageQueue(config => config
 	.ConfigureResolveConnection(sp => sp.GetRequiredKeyedService<NatsConnection>("Nats"))
-	.AddHandler<GameBetMessageHandler>(Tgs.GameBets.Common.GameBetsNatsConst.GameBetAddPublish, typeof(GameBetMessageHandler).FullName!.ToLower())
+	.AddHandler<GameBetMessageHandler>(Tgs.GameBets.Worker.Common.GameBetsWorkerNatsConst.GameBetsWorkerAddPublish, typeof(GameBetMessageHandler).FullName!.ToLower())
 	.AddHandler<DepositFormMessageHandler>("tgs.payment.deposit.status_ex", typeof(DepositFormMessageHandler).FullName!.ToLower())
 	.AddHandler<LevelTriggerMessageHandler>(VipLevelsLevelNatsConst.VipLevelsLevelTrigger, VipLevelsLevelNatsConst.VipLevelsLevelTrigger)
 	.AddHandler<LevelCheckMessageHandler>(VipLevelsLevelNatsConst.VipLevelsLevelCheck, VipLevelsLevelNatsConst.VipLevelsLevelCheck)

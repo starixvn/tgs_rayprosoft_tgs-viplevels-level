@@ -18,8 +18,7 @@ data:
       },
       "VipLevelsLevelConnectionStrings": {
         "VipLevelServiceClientBaseUrl": "http://tgs-viplevel/",
-        "PaymentServiceClientBaseUrl": "http://payment-api/",
-         "GameBetClientBaseUrl": "http://game-gamebets/"
+        "PaymentServiceClientBaseUrl": "http://payment-api/"
       }
     }
   otel-collector-config.yaml: |
