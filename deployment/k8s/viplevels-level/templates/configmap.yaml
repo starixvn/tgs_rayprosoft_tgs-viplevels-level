@@ -11,9 +11,9 @@ data:
       "Logging": {
         "LogLevel": {
           "Default": "Warning",
-          "Tgs.VipLevels.Level.Messages.DepositFormMessageHandler": "Information",
-          "Tgs.VipLevels.Level.Messages.GameBetMessageHandler": "Information",
-          "Tgs.VipLevels.Level.Core.ApplicationServices.LevelUpgradeCommandService": "Information"
+          "Tgs.VipLevels.Level.Messages.DepositFormMessageHandler": "Warning",
+          "Tgs.VipLevels.Level.Messages.GameBetMessageHandler": "Warning",
+          "Tgs.VipLevels.Level.Core.ApplicationServices.LevelUpgradeCommandService": "Warning"
         }
       },
       "VipLevelsLevelConnectionStrings": {
