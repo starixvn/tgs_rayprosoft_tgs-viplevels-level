@@ -120,7 +120,7 @@ builder.Services
 		.AddAspNetCoreInstrumentation(options => options.Filter =
 		httpContext => !httpContext.Request.Path.HasValue
 			|| !httpContext.Request.Path.StartsWithSegments("/swagger")
-			&& !httpContext.Request.Path.StartsWithSegments("/healthz")
+			&& !httpContext.Request.Path.StartsWithSegments("/health")
 			&& !httpContext.Request.Path.StartsWithSegments("/profiler/")
 			&& !httpContext.Request.Path.StartsWithSegments("/hangfire")
 			&& !httpContext.Request.Path.StartsWithSegments("/metrics")
@@ -161,7 +161,7 @@ app.UseHangfireDashboard(
 _ = app.MapControllers();
 _ = app.MapSwagger();
 
-app.UseHealthChecks("/healthz");
+app.UseHealthChecks("/health");
 
 _ = app.UseHangfireRegisterAsync();
 
